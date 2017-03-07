@@ -22,16 +22,17 @@ public class ConnexionDB {
 		}
 	}
 	
-	public static Connection getInstance(){
-		if (connect == null) {
+	public static Connection getInstance() throws SQLException{
+		if (connect.isClosed()) {
 			instance = new ConnexionDB();
 		}
+		
 		return connect;
 	}
 	
-	public static void closeConnexion() {
+	public static void closeConnexion() throws SQLException {
 	
-		if(connect != null) {
+		if(!connect.isClosed()) {
 			try {
 				connect.close();
 			
@@ -39,5 +40,6 @@ public class ConnexionDB {
 				e.printStackTrace();
 			}
 		}
+		
 	}
 }

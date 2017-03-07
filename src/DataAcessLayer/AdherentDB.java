@@ -11,11 +11,12 @@ import Classes.Adherent;
 
 
 public class AdherentDB {
-	PreparedStatement st = null;
-	Statement state = null;
-	ResultSet result = null;
+	private PreparedStatement st = null;
+	private Statement state = null;
+	private ResultSet result = null;
 	
-	public void saveAdherent(Adherent adherent) {
+	public boolean saveAdherent(Adherent adherent) {
+		boolean existResult=false;
 		//Chargement du driver JDBC pour MySQL
 		try {	
 			Class.forName( "com.mysql.jdbc.Driver" );
@@ -26,6 +27,7 @@ public class AdherentDB {
 
 		try {
 			String sql;
+		
 			if(adherent.getId() == -1) {
 			
 				sql = "INSERT INTO adherent VALUES (NULL, ?, ?, ?, ?, ?, ?)";
@@ -54,13 +56,32 @@ public class AdherentDB {
 					st.setInt(7, adherent.getTypeAdhesion().getIdTypeAdhesion());
 					
 					st.executeUpdate();
+					existResult = false;
 				}else {
-					System.out.println("Adhérent existe déjà");
+					existResult = true;
 				}
+				
+				
 			}
+			
 		} catch ( SQLException e ) {
 			 e.printStackTrace();
+		}finally {
+			
+		    if (st != null) {
+		        try {
+		        	st.close();
+		        } catch (SQLException e) { /* ignoré */}
+		    }
+		        try {
+		        	ConnexionDB.closeConnexion();
+		        } catch (SQLException e) { /* ignoré */}
+		    
+			
 		}
+		
+		return existResult;
+
 	}
 	
 	public boolean verifExistAdherent(Adherent adherent) {
@@ -84,8 +105,26 @@ public class AdherentDB {
 					resultat = true;
 				}
 			}
+			
+
 		} catch(SQLException e) {
 			e.printStackTrace();
+		}finally {
+			if (result != null) {
+		        try {
+		        	result.close();
+		        } catch (SQLException e) { /* ignoré */}
+		    }
+		    if (state != null) {
+		        try {
+		        	state.close();
+		        } catch (SQLException e) { /* ignoré */}
+		    }
+		        try {
+		        	ConnexionDB.closeConnexion();
+		        } catch (SQLException e) { /* ignoré */}
+		    
+			
 		}
 
 		return resultat;
@@ -116,8 +155,26 @@ public class AdherentDB {
 				System.out.println( result.getDate( "DateNaissance" ) );
 				System.out.println( result.getInt( "TypeAdhesion" )+"\n" );
 			}
+		
+
 		} catch(SQLException e) {
 			e.printStackTrace();
+		}finally {
+			if (result != null) {
+		        try {
+		        	result.close();
+		        } catch (SQLException e) { /* ignoré */}
+		    }
+		    if (state != null) {
+		        try {
+		        	state.close();
+		        } catch (SQLException e) { /* ignoré */}
+		    }
+		        try {
+		        	ConnexionDB.closeConnexion();
+		        } catch (SQLException e) { /* ignoré */}
+		    
+			
 		}
 	}
 
@@ -149,8 +206,26 @@ public class AdherentDB {
 				System.out.println( result.getDate( "DateNaissance" ) );
 				System.out.println( result.getInt( "TypeAdhesion" )+"\n" );
 			}
+			
+
 		} catch(SQLException e) {
 			e.printStackTrace();
+		} finally {
+			if (result != null) {
+		        try {
+		        	result.close();
+		        } catch (SQLException e) { /* ignoré */}
+		    }
+		    if (state != null) {
+		        try {
+		        	state.close();
+		        } catch (SQLException e) { /* ignoré */}
+		    }
+		        try {
+		        	ConnexionDB.closeConnexion();
+		        } catch (SQLException e) { /* ignoré */}
+		    
+			
 		}
 	}
 
@@ -167,7 +242,7 @@ public class AdherentDB {
 		try {
 			//Création d'un statement
 			String sql = "UPDATE adherent SET idAdherent = ?, Nom = ?, Prenom = ?, CodePostal = ?, Ville = ?"
-					+ ", DateNaissance = ?";
+					+ ", DateNaissance = ? , TypeAdhesion = ? WHERE idAdherent= ?";
 			
 			st = ConnexionDB.getInstance().prepareStatement( sql );
 		
@@ -177,12 +252,27 @@ public class AdherentDB {
 			st.setString(4, adherent.getCodePostal());
 			st.setString(5, adherent.getVille());
 			st.setDate(6, adherent.getAnneeNaissance());
-			//st.setObject(7, adherent.getTypeAdhesion());
+			st.setInt(7, adherent.getTypeAdhesion().getIdTypeAdhesion());
+			st.setInt(8, adherent.getId());
 			
 			st.executeUpdate();
 			st.close();
+			ConnexionDB.closeConnexion();
+
 		} catch(SQLException e) {
 			e.printStackTrace();
+		}finally {
+			
+		    if (st != null) {
+		        try {
+		        	st.close();
+		        } catch (SQLException e) { /* ignoré */}
+		    }
+		        try {
+		        	ConnexionDB.closeConnexion();
+		        } catch (SQLException e) { /* ignoré */}
+		    
+			
 		}
 	}
 
@@ -206,10 +296,23 @@ public class AdherentDB {
 			st.executeUpdate();
 			System.out.println("La personne a été supprimé de la base de donnée");
 			
-			st.close();
+			
+
 			
 		} catch ( SQLException e ) {
 			 e.printStackTrace();
+		}finally {
+			
+		    if (st != null) {
+		        try {
+		        	st.close();
+		        } catch (SQLException e) { /* ignoré */}
+		    }
+		        try {
+		        	ConnexionDB.closeConnexion();
+		        } catch (SQLException e) { /* ignoré */}
+		    
+			
 		}
 	}
 }

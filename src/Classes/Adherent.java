@@ -55,9 +55,6 @@ public class Adherent {
 	}
 	
 	//setter
-	public void setId(int id) {
-		this.id = id;
-	}
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
