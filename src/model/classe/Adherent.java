@@ -1,4 +1,4 @@
-package Classes;
+package model.classe;
 
 import java.io.Serializable;
 import java.sql.Date;

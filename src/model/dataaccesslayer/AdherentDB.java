@@ -1,12 +1,15 @@
-package DataAcessLayer;
+package model.dataaccesslayer;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import Classes.Adherent;
+import model.classe.Adherent;
+import model.classe.TypeAdhesion;
+import model.dataaccesslayer.ConnexionDB;
 
 
 
@@ -29,7 +32,8 @@ public class AdherentDB {
 			String sql;
 		
 			if(adherent.getId() == -1) {
-			
+				boolean exist = verifExistAdherent(adherent);
+				if(!exist) {
 				sql = "INSERT INTO adherent VALUES (NULL, ?, ?, ?, ?, ?, ?)";
 				st = ConnexionDB.getInstance().prepareStatement( sql );
 				st.setString(1, adherent.getNom());
@@ -40,6 +44,9 @@ public class AdherentDB {
 				st.setInt(6, adherent.getTypeAdhesion().getIdTypeAdhesion());
 				
 				st.executeUpdate();
+				}else {
+					existResult = true;
+				}
 			}else {
 				boolean exist = verifExistAdherent(adherent);
 				if(!exist) {			
@@ -94,7 +101,7 @@ public class AdherentDB {
 			System.out.println( "Erreur chargement du driver: " +e.getMessage() );
 		}try {
 			
-			String sql = "SELECT COUNT(*) AS adherentExist FROM adherent WHERE idAdherent = "+adherent.getId()+"";
+			String sql = "SELECT COUNT(*) AS adherentExist FROM adherent WHERE Nom = '"+adherent.getNom()+"' AND Prenom = '"+adherent.getPrenom()+"'";
 			state = ConnexionDB.getInstance().createStatement();
 			result = state.executeQuery( sql );
 			
@@ -105,8 +112,6 @@ public class AdherentDB {
 					resultat = true;
 				}
 			}
-			
-
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -122,41 +127,43 @@ public class AdherentDB {
 		    }
 		        try {
 		        	ConnexionDB.closeConnexion();
-		        } catch (SQLException e) { /* ignoré */}
-		    
-			
+		        } catch (SQLException e) { /* ignoré */}	
 		}
-
 		return resultat;
 	}
 	
 	
 
-	public void selectAdherents() {
+	public Adherent selectAdherents() {
 		//Établissement de la connexion
 		try {	
 			Class.forName( "com.mysql.jdbc.Driver" );
 			
 		} catch ( ClassNotFoundException e ) {
-			System.out.println( "Erreur chargement du driver: " +e.getMessage() );
-		}try {
+			System.out.println( "Erreur chargement du driver: " +e.getMessage() );	
+		}
+		
+		Adherent lesAdherents = null;
+		
+		try {
 			String sql = "SELECT * FROM adherent";
 			state = ConnexionDB.getInstance().createStatement();
 			//Etape 4 : exécution requête
 			result = state.executeQuery( sql );
-			
+		
 			//Etape 5 : (parcours Resultset
 			while( result.next() ) {
-				System.out.println( result.getInt( "idAdherent" ) );
-				System.out.println( result.getString( "Nom" ) );
-				System.out.println( result.getString( "Prenom" ) );
-				System.out.println( result.getString( "CodePostal" ) );
-				System.out.println( result.getString( "Ville" ) );
-				System.out.println( result.getDate( "DateNaissance" ) );
-				System.out.println( result.getInt( "TypeAdhesion" )+"\n" );
-			}
-		
+				int idAdherent = result.getInt( "idAdherent" );
+				String nom = result.getString( "Nom" );
+				String prenom =  result.getString( "Prenom" );
+				String codePostal = result.getString( "CodePostal" ) ;
+				String ville = result.getString( "Ville" );
+				Date dateNaissance = result.getDate( "DateNaissance" );
+				TypeAdhesion typeAdhesion = (TypeAdhesion) result.getObject( "TypeAdhesion" );
 
+				lesAdherents = new Adherent(idAdherent, nom, prenom, codePostal, ville, dateNaissance, typeAdhesion);
+			
+			}
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -170,16 +177,15 @@ public class AdherentDB {
 		        	state.close();
 		        } catch (SQLException e) { /* ignoré */}
 		    }
-		        try {
-		        	ConnexionDB.closeConnexion();
-		        } catch (SQLException e) { /* ignoré */}
-		    
-			
+	        try {
+	        	ConnexionDB.closeConnexion();
+	        } catch (SQLException e) { /* ignoré */}
 		}
+		return lesAdherents;
 	}
 
 
-	public void selectAdherent(int idAdherent) {
+	public Adherent selectAdherent(int idAdherent) {
 		//Chargement du driver JDBC pour MySQL
 		try {	
 			Class.forName( "com.mysql.jdbc.Driver" );
@@ -187,6 +193,8 @@ public class AdherentDB {
 		} catch ( ClassNotFoundException e ) {
 			System.out.println( "Erreur chargement du driver: " +e.getMessage() );
 		}
+		
+		Adherent leAdherent = null;
 		
 		//Établissement de la connexion
 		try {
@@ -196,18 +204,20 @@ public class AdherentDB {
 			state = ConnexionDB.getInstance().createStatement();
 			
 			result = state.executeQuery( sql );
+			
 			//Etape 5 : (parcours Resultset
 			while( result.next() ) {
-				System.out.println( result.getInt( "idAdherent" ) );
-				System.out.println( result.getString( "Nom" ) );
-				System.out.println( result.getString( "Prenom" ) );
-				System.out.println( result.getString( "CodePostal" ) );
-				System.out.println( result.getString( "Ville" ) );
-				System.out.println( result.getDate( "DateNaissance" ) );
-				System.out.println( result.getInt( "TypeAdhesion" )+"\n" );
+				int idDeAdherent = result.getInt( "idAdherent" );
+				String nom = result.getString( "Nom" );
+				String prenom =  result.getString( "Prenom" );
+				String codePostal = result.getString( "CodePostal" ) ;
+				String ville = result.getString( "Ville" );
+				Date dateNaissance = result.getDate( "DateNaissance" );
+				TypeAdhesion typeAdhesion = (TypeAdhesion) result.getObject( "TypeAdhesion" );
+				
+				leAdherent = new Adherent(idDeAdherent, nom, prenom, codePostal, ville, dateNaissance, typeAdhesion);
 			}
 			
-
 		} catch(SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -224,8 +234,7 @@ public class AdherentDB {
 		        try {
 		        	ConnexionDB.closeConnexion();
 		        } catch (SQLException e) { /* ignoré */}
-		    
-			
+		    return 	leAdherent;	
 		}
 	}
 
@@ -271,8 +280,6 @@ public class AdherentDB {
 		        try {
 		        	ConnexionDB.closeConnexion();
 		        } catch (SQLException e) { /* ignoré */}
-		    
-			
 		}
 	}
 
@@ -310,9 +317,7 @@ public class AdherentDB {
 		    }
 		        try {
 		        	ConnexionDB.closeConnexion();
-		        } catch (SQLException e) { /* ignoré */}
-		    
-			
+		        } catch (SQLException e) { /* ignoré */}	
 		}
 	}
 }

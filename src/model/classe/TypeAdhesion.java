@@ -1,4 +1,4 @@
-package Classes;
+package model.classe;
 
 import java.io.Serializable;
 import java.sql.PreparedStatement;
@@ -12,7 +12,14 @@ public class TypeAdhesion {
 	public String libelle;
 	public int tarif;
 	
-	//constructeur
+	//constructeur sans idTypeAdhesion (-1)
+	public TypeAdhesion(String libelle, int tarif) {
+		this.idTypeAdhesion = -1;
+		this.libelle = libelle;
+		this.tarif = tarif;
+	}
+	
+	//constructeur avec idTypeAdhesion
 	public TypeAdhesion(int idTypeAdhesion, String libelle, int tarif) {
 		this.idTypeAdhesion = idTypeAdhesion;
 		this.libelle = libelle;
