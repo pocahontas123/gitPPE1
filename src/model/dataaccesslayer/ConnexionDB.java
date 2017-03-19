@@ -30,15 +30,20 @@ public class ConnexionDB {
 		return connect;
 	}
 	
-	public static void closeConnexion() throws SQLException {
+	public static void closeConnexion()  {
 	
-		if(!connect.isClosed()) {
-			try {
-				connect.close();
-			
-			}catch (SQLException e){
-				e.printStackTrace();
+		try {
+			if(!connect.isClosed()) {
+				try {
+					connect.close();
+				
+				}catch (SQLException e){
+					e.printStackTrace();
+				}
 			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 	}

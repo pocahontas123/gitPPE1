@@ -1,15 +1,12 @@
 package model.dataaccesslayer;
 
-import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
-import model.classe.Adherent;
 import model.classe.TypeAdhesion;
 
 public class TypeAdhesionDB {
@@ -18,7 +15,8 @@ public class TypeAdhesionDB {
 	Statement state = null;
 	ResultSet result = null;
 	
-	public boolean verifExistTypeAdhesion(TypeAdhesion typeAdhesion) {
+	
+	public boolean verifExistTypeAdhesion(TypeAdhesion typeAdhesion)  {
 		boolean resultat = false;
 		
 		try {	
@@ -42,26 +40,33 @@ public class TypeAdhesionDB {
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}finally {
-			if (result != null) {
-		        try {
-		        	result.close();
-		        } catch (SQLException e) { /* ignoré */}
-		    }
-		    if (state != null) {
-		        try {
-		        	state.close();
-		        } catch (SQLException e) { /* ignoré */}
-		    }
-		        try {
-		        	ConnexionDB.closeConnexion();
-		        } catch (SQLException e) { /* ignoré */} 	
+			try {
+				if (!result.isClosed()) {
+				    try {
+				    	result.close();
+				    } catch (SQLException e) { /* ignoré */}
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		    try {
+				if (!state.isClosed()) {
+				    try {
+				    	state.close();
+				    } catch (SQLException e) { /* ignoré */}
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		        	
 		}
 		return resultat;
 	}
 	
 	
-	
-	public TypeAdhesion getTypeAdhesion(String Libelle) {
+	public TypeAdhesion getTypeAdhesion(String Libelle)  {
 		//Chargement du driver JDBC pour MySQL
 		try {	
 			Class.forName( "com.mysql.jdbc.Driver" );
@@ -72,13 +77,8 @@ public class TypeAdhesionDB {
 
 		TypeAdhesion leTypeAdhesion = null;
 		
-		//Établissement de la connexion
-		try {	
-			Class.forName( "com.mysql.jdbc.Driver" );
-			
-		} catch ( ClassNotFoundException e ) {
-			System.out.println( "Erreur chargement du driver: " +e.getMessage() );
-		}try {
+	
+		try {
 			String sql = "SELECT idTypeAdhesion, Libelle, Tarif from typeadhesion WHERE Libelle = '"+Libelle+"'";
 			
 
@@ -97,25 +97,33 @@ public class TypeAdhesionDB {
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}finally {
-			if (result != null) {
-		        try {
-		        	result.close();
-		        } catch (SQLException e) { /* ignoré */}
-		    }
-		    if (state != null) {
-		        try {
-		        	state.close();
-		        } catch (SQLException e) { /* ignoré */}
-		    }
-	        try {
-	        	ConnexionDB.closeConnexion();
-	        } catch (SQLException e) { /* ignoré */}
+			try {
+				if (!result.isClosed()) {
+				    try {
+				    	result.close();
+				    } catch (SQLException e) { /* ignoré */}
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		    try {
+				if (!state.isClosed()) {
+				    try {
+				    	state.close();
+				    } catch (SQLException e) { /* ignoré */}
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	        	
 		}
 		return leTypeAdhesion;
 	}
 
 	
-	public ArrayList getTypeAdhesions() {
+	public ArrayList getTypeAdhesions()  {
 		//Chargement du driver JDBC pour MySQL
 		try {	
 			Class.forName( "com.mysql.jdbc.Driver" );
@@ -154,27 +162,98 @@ public class TypeAdhesionDB {
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}finally {
-			if (result != null) {
-		        try {
-		        	result.close();
-		        } catch (SQLException e) { /* ignoré */}
-		    }
-		    if (state != null) {
-		        try {
-		        	state.close();
-		        } catch (SQLException e) { /* ignoré */}
-		    }
-	        try {
-	        	ConnexionDB.closeConnexion();
-	        } catch (SQLException e) { /* ignoré */}
+			try {
+				if (!result.isClosed()) {
+				    try {
+				    	result.close();
+				    } catch (SQLException e) { /* ignoré */}
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		    try {
+				if (!state.isClosed()) {
+				    try {
+				    	state.close();
+				    } catch (SQLException e) { /* ignoré */}
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	        	
 		}	
 		return Adhesion;
 	}
 	
 	
+	public TypeAdhesion getTypeAdhesion(int idTypeAdhesion)  {
+		//Chargement du driver JDBC pour MySQL
+		try {	
+			Class.forName( "com.mysql.jdbc.Driver" );
+			
+		} catch ( ClassNotFoundException e ) {
+			System.out.println( "Erreur chargement du driver: " +e.getMessage() );
+		}
+		
+		//information d'accès à la base de données
+		TypeAdhesion leTypeAdhesion = null;
+		
+		
+		//Établissement de la connexion
+		try {	
+			Class.forName( "com.mysql.jdbc.Driver" );
+			
+		} catch ( ClassNotFoundException e ) {
+			System.out.println( "Erreur chargement du driver: " +e.getMessage() );
+		}try {
+			String sql = "SELECT idTypeAdhesion, Libelle, Tarif from typeadhesion WHERE idTypeAdhesion = '"+idTypeAdhesion+"'";
+			
+			//Etape 4 : exécution requête
+			state = ConnexionDB.getInstance().createStatement();
+			//Etape 4 : exécution requête
+			result = state.executeQuery( sql );
+			
+			//Etape 5 : (parcours Resultset
+			while( result.next() ) {
+				int idType = result.getInt( "idTypeAdhesion" );
+				String libelle = result.getString( "Libelle" );
+				int tarif = result.getInt( "Tarif" );
+				
+				leTypeAdhesion = new TypeAdhesion(idType, libelle, tarif);
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if (!result.isClosed()) {
+				    try {
+				    	result.close();
+				    } catch (SQLException e) { /* ignoré */}
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		    try {
+				if (!state.isClosed()) {
+				    try {
+				    	state.close();
+				    } catch (SQLException e) { /* ignoré */}
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	        	
+		}	
+		return leTypeAdhesion;
+	}
 	
-	public boolean saveTypeAdhesion(TypeAdhesion adhesion) {
-		boolean existResult=false;
+	
+	public boolean saveTypeAdhesion(TypeAdhesion adhesion)  {
+		boolean existResult = false;
 		
 		//Chargement du driver JDBC pour MySQL
 		try {	
@@ -187,13 +266,15 @@ public class TypeAdhesionDB {
 		try {
 			String sql;
 			
+			//Si je n'ai pas d'id de fourni
 			if(adhesion.getIdTypeAdhesion() == -1) {
-				sql = "INSERT INTO typeadhesion (NULL, Libelle, Tarif) VALUES (?, ?, ?)";
+				//je mets NULL et j'aurais par concéquent un id automatique
+				sql = "INSERT INTO typeadhesion (idTypeAdhesion, Libelle, Tarif) VALUES (NULL, ?, ?)";
 				
 				st = ConnexionDB.getInstance().prepareStatement( sql );
 
-				st.setString(2, adhesion.getLibelle());
-				st.setInt(3, adhesion.getTarif());
+				st.setString(1, adhesion.getLibelle());
+				st.setInt(2, adhesion.getTarif());
 				
 				//Etape 4 : exécution requête
 				st.executeUpdate();				
@@ -218,19 +299,24 @@ public class TypeAdhesionDB {
 			 e.printStackTrace();
 		}finally {
 			
-		    if (st != null) {
-		        try {
-		        	st.close();
-		        } catch (SQLException e) { /* ignoré */}
-		    }
-	        try {
-	        	ConnexionDB.closeConnexion();
-	        } catch (SQLException e) { /* ignoré */}
+		    try {
+				if (!st.isClosed()) {
+				    try {
+				    	st.close();
+				    } catch (SQLException e) { /* ignoré */}
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	        	
+	     
 		}
 		return existResult;
 	}
 	
-	public void supprimerTypeAdhesion(int idTypeAdherent) {
+	public boolean supprimerTypeAdhesion(TypeAdhesion adhesion) {
+		boolean existResult = false;
 		//Chargement du driver JDBC pour MySQL
 		try {	
 			Class.forName( "com.mysql.jdbc.Driver" );
@@ -244,25 +330,76 @@ public class TypeAdhesionDB {
 			
 			st = ConnexionDB.getInstance().prepareStatement( sql );
 			
-			st.setInt(1, idTypeAdherent);
+			st.setInt(1, adhesion.getIdTypeAdhesion());
 			
 			st.executeUpdate();
 			System.out.println("Le type d'adhésion a été supprimé de la base de donnée");
-			
+			existResult = true;
+				
 		} catch ( SQLException e ) {
-			 e.printStackTrace();
+			existResult = false;
+			e.printStackTrace();
 		}finally {
-		    if (st != null) {
-		        try {
-		        	st.close();
-		        } catch (SQLException e) { /* ignoré */}
-		    }
-	        try {
-	        	ConnexionDB.closeConnexion();
-	        } catch (SQLException e) { /* ignoré */}    	
+		    try {
+				if (!st.isClosed()) {
+				    try {
+				    	st.close();
+				    } catch (SQLException e) { /* ignoré */}
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	     
+	        	
 		}
+		return existResult;
 	}
 	
+	public boolean updateCategorie(TypeAdhesion typeAdhesion)  {
+		boolean existResult = false;
+		//Chargement du driver JDBC pour MySQL
+		try {	
+			Class.forName( "com.mysql.jdbc.Driver" );
+			
+		} catch ( ClassNotFoundException e ) {
+			System.out.println( "Erreur chargement du driver: " +e.getMessage() );
+		}
+		
+		//Établissement de la connexion
+		try {
+			//Création d'un statement
+			String sql = "UPDATE typeAdhesion SET Libelle = ?, Tarif = ? WHERE idTypeAdhesion= ?";
+			
+			st = ConnexionDB.getInstance().prepareStatement( sql );
+		
+			st.setString(1, typeAdhesion.getLibelle());
+			st.setInt(2, typeAdhesion.getTarif());
+			st.setInt(3, typeAdhesion.getIdTypeAdhesion());
+			
+			st.executeUpdate();
+			existResult = true;
+			
+		} catch(SQLException e) {
+			existResult = false;
+			e.printStackTrace();
+		}finally {
+			
+		    try {
+				if (!st.isClosed()) {
+				    try {
+				    	st.close();
+				    } catch (SQLException e) { /* ignoré */}
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	       
+	        	
+		}
+		return existResult;
+	}
 	
-	
+		
 }

@@ -11,22 +11,28 @@ public class Adherent {
 	private String prenom;
 	private String codePostal;
 	private String ville;	
+	private String telephone;
+	private String email;
+	private boolean paiement;	
 	private java.sql.Date anneeNaissance;
 	
 	//constructeur sans id
-	public Adherent(String nom, String prenom, String codePostal, String ville, java.sql.Date anneeNaissance, TypeAdhesion typeAdhesion) {
+	public Adherent(String nom, String prenom, String codePostal, String ville, java.sql.Date anneeNaissance, TypeAdhesion typeAdhesion, String telephone, String email, boolean paiement) {
 		this.id = -1;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.codePostal = codePostal;
 		this.ville = ville;
 		this.anneeNaissance = anneeNaissance;
-		this.typeAdhesion = typeAdhesion;
+		this.typeAdhesion = typeAdhesion;	
+		this.telephone = telephone;
+		this.email = email;
+		this.paiement = paiement;
 	}
 	
 	//constructeur avec id
-	public Adherent(int id, String nom, String prenom, String codePostal, String ville, java.sql.Date anneeNaissance, TypeAdhesion typeAdhesion) {
-		this(nom, prenom, codePostal, ville, anneeNaissance, typeAdhesion);
+	public Adherent(int id, String nom, String prenom, String codePostal, String ville, java.sql.Date anneeNaissance, TypeAdhesion typeAdhesion, String telephone, String email, boolean paiement) {
+		this(nom, prenom, codePostal, ville, anneeNaissance, typeAdhesion, telephone, email, paiement);
 		
 		this.id = id;	
 	}
@@ -53,6 +59,15 @@ public class Adherent {
 	public TypeAdhesion getTypeAdhesion() {
 		return this.typeAdhesion;
 	}
+	public String getTelephone() {
+		return this.telephone;
+	}
+	public String getEmail() {
+		return this.email;
+	}
+	public boolean getPaiement() {
+		return this.paiement;
+	}
 	
 	//setter
 	public void setNom(String nom) {
@@ -72,6 +87,15 @@ public class Adherent {
 	}	
 	public void setTypeAdhesion(TypeAdhesion typeAdhesion) {
 		this.typeAdhesion = typeAdhesion;
+	}
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public void setPaiement(boolean paiement) {
+		this.paiement = paiement;
 	}
 	
 }
