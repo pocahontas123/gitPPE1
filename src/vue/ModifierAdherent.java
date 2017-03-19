@@ -1,15 +1,19 @@
 package vue;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -21,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.MaskFormatter;
 
 import model.classe.Adherent;
 import model.classe.TypeAdhesion;
@@ -51,7 +56,8 @@ public class ModifierAdherent extends JPanel{
 	  private TitledBorder titleBorder, titleBorder2;
 	private JPanel AdherentPan ;  
 	private JLabel TypeAdhesion, Nom, Prenom, CodePostal,  Ville, DateNaissance, Telephone, Email, Paiement, listeAd;
-	
+	  private Pattern patMail = Pattern.compile("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$");
+
 	
 	
 	public ModifierAdherent() {
@@ -120,8 +126,12 @@ public class ModifierAdherent extends JPanel{
 	    CodePostal.setHorizontalAlignment(JLabel.RIGHT);
 	    CodePostal.setPreferredSize(new Dimension(220, 20));
 	    
-	    CodePostalT = new JFormattedTextField(NumberFormat.getNumberInstance());
 
+	    try{
+	    	 
+	    	  MaskFormatter telMask = new MaskFormatter("#####");
+	    	  CodePostalT = new JFormattedTextField(telMask);
+	    	}catch(ParseException e){e.printStackTrace();}
 
 	    Ville = new JLabel("Ville : ");
 	    Ville.setFont(police1);
@@ -144,7 +154,13 @@ public class ModifierAdherent extends JPanel{
 	    Telephone.setHorizontalAlignment(JLabel.RIGHT);
 	    Telephone.setPreferredSize(new Dimension(220, 20));
 	    
-	    TelephoneT = new JTextField();
+
+	    try{
+	    	 
+	    	  MaskFormatter telMask = new MaskFormatter("0#.##.##.##.##");
+	    	   TelephoneT = new JFormattedTextField(telMask);
+	    	}catch(ParseException e){e.printStackTrace();}
+	    
 	    
 	    Email = new JLabel("Email : ");
 	    Email.setFont(police1);
@@ -191,6 +207,8 @@ public class ModifierAdherent extends JPanel{
 	    combo2.setPreferredSize(new Dimension(200, 30));
 	    combo10.setPreferredSize(new Dimension(200, 30));
 	
+	   
+	    
 	    AdherentPan.add(Nom);
 	    AdherentPan.add(NomT);
 	    AdherentPan.add(Prenom);
@@ -225,9 +243,55 @@ public class ModifierAdherent extends JPanel{
 	    boutonPan.add(raz);
 	    boutonPan.setPreferredSize(new Dimension(50, 60));
 
+	    
+	    
+	    EmailT.addFocusListener(new FocusListener() {
+	          public void focusLost(FocusEvent e) {
+	      	    if (!patMail.matcher(EmailT.getText()).matches()) {
+	      	    	EmailT.setForeground(Color.red);
+	            	  JOptionPane jop3 = new JOptionPane();
+	            		
+			    		jop3.showMessageDialog(null, "Email Invalide!", "Erreur", JOptionPane.ERROR_MESSAGE);	
+	              }
+	          }
+
+	          public void focusGained(FocusEvent e) {
+	      	    	EmailT.setForeground(Color.black);
+
+	          }
+	      });
+	    
+	    
+	    
+	    
+	    ((JTextField)DateT.getDateEditor().getUiComponent()).addFocusListener(new FocusListener() {
+	          public void focusLost(FocusEvent e) {
+	        	  if(!((JTextField)DateT.getDateEditor().getUiComponent()).getText().isEmpty())
+	        	  {
+	        	try{
+					java.sql.Date dateDB = new java.sql.Date(DateT.getDate().getTime());
+
+	        	}catch(Exception ex) {
+	    			ex.printStackTrace();
+	        		 JOptionPane jop3 = new JOptionPane();
+	            		
+			    		jop3.showMessageDialog(null, "Date de Naissance Invalide!", "Erreur", JOptionPane.ERROR_MESSAGE);
+	        	}	
+	        		 
+	          }
+	          }
+	          public void focusGained(FocusEvent e) {
+	        	  
+
+	          }
+	      });
+	    
+	    
 	    ListeAdherents.setVisible(true);
 	    AdherentPan.setVisible(false);
 	    boutonPan.setVisible(false);
+	    
+	    
 	    
 	    contentPan.setLayout(new BorderLayout());
 	    ListeAdherents.add(listeAd);
@@ -240,6 +304,7 @@ public class ModifierAdherent extends JPanel{
 	    this.add(contentPan);
 	}
 	
+	  
 	class BoutonListenerCombo implements ActionListener {
 		
 
@@ -307,7 +372,7 @@ public class ModifierAdherent extends JPanel{
 	class BoutonListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			if(!NomT.getText().isEmpty() && !PrenomT.getText().isEmpty() && !CodePostalT.getText().isEmpty() && !VilleT.getText().isEmpty() && !((JTextField)DateT.getDateEditor()).getText().isEmpty() && !TelephoneT.getText().isEmpty() && !EmailT.getText().isEmpty() && (String)combo2.getSelectedItem() != "Sélectionner...") {
+			if(!NomT.getText().isEmpty() && !PrenomT.getText().isEmpty() && !CodePostalT.getText().isEmpty() && !VilleT.getText().isEmpty() && !((JTextField)DateT.getDateEditor().getUiComponent()).getText().isEmpty() && !TelephoneT.getText().isEmpty() && !EmailT.getText().isEmpty() && (String)combo2.getSelectedItem() != "Sélectionner..." && patMail.matcher(EmailT.getText()).matches()) {
 				AdherentDB adDB = new AdherentDB();    
 				
 				String[] splitArray = null;
@@ -323,7 +388,7 @@ public class ModifierAdherent extends JPanel{
 
 			    typeAd = adhesionDB.getTypeAdhesion((String)combo2.getSelectedItem());
 			   
-
+			    try{
 				java.sql.Date dateDB = new java.sql.Date(DateT.getDate().getTime());
 
 				ad.setCodePostal(CodePostalT.getText());
@@ -373,11 +438,16 @@ public class ModifierAdherent extends JPanel{
 
 			    	jop.showMessageDialog(null, "Erreur de mise à jours ", "Erreur", JOptionPane.ERROR_MESSAGE);
 			     }
-
+			}catch(Exception ex) {
+    			ex.printStackTrace();
+        		 JOptionPane jop3 = new JOptionPane();
+            		
+		    		jop3.showMessageDialog(null, "Date de Naissance Invalide!", "Erreur", JOptionPane.ERROR_MESSAGE);
+        	}
 		     }else {
 		    	 JOptionPane jop3 = new JOptionPane();
 
-		    	 jop3.showMessageDialog(null, "Champ(s) Vide(s) ", "Erreur", JOptionPane.ERROR_MESSAGE);	
+		    	 jop3.showMessageDialog(null, "Champ(s) Vide(s) et/ou Invalide(s) ", "Erreur", JOptionPane.ERROR_MESSAGE);	
 			 }	
 		}
 		

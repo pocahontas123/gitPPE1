@@ -112,7 +112,6 @@ public class AjoutAdherent extends JPanel {
 	    CodePostal.setHorizontalAlignment(JLabel.RIGHT);
 	    CodePostal.setPreferredSize(new Dimension(220, 20));
 	    
-	    CodePostalT = new JFormattedTextField(NumberFormat.getNumberInstance());
 
 	    try{
 	    	 
