@@ -1,6 +1,7 @@
 package vue;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -42,6 +43,7 @@ public class SupprimerCategorie extends JPanel{
 		this.setSize(500, 400);
 		this.setVisible(true);
     	contentPan.setPreferredSize(dim2);
+		this.setBackground(Color.white);
 
 	    this.initComposant();
 	}
@@ -119,7 +121,11 @@ public class SupprimerCategorie extends JPanel{
 	    contentPan.add(ListeCategorie, BorderLayout.NORTH);
 	    contentPan.add(FicheCategoriePan, BorderLayout.CENTER);
 	    contentPan.add(boutonPan, BorderLayout.SOUTH);
-	    
+	    contentPan.setBackground(Color.WHITE);
+	    ListeCategorie.setBackground(Color.WHITE);
+	    FicheCategoriePan.setBackground(Color.WHITE);
+	    boutonPan.setBackground(Color.WHITE);
+
 	    this.add(contentPan);
 	}
 	
@@ -136,7 +142,7 @@ public class SupprimerCategorie extends JPanel{
 				type = typeDB.getTypeAdhesion(nom);
 	    	
 				LibelleT.setText(type.getLibelle());	
-				TarifT.setText(Integer.toString(type.getTarif()));
+				TarifT.setText(Integer.toString(type.getTarif())+ " €" );
 				
 				TitledBorder bf = BorderFactory.createTitledBorder("Fiche Categorie "+ LibelleT.getText());
 				FicheCategoriePan.setBorder(bf);
@@ -187,7 +193,8 @@ public class SupprimerCategorie extends JPanel{
 		
 				    image.add(new JLabel(iconM2l));
 				    image.add(new JLabel(iconTir));
-		    		   
+		    		image.setBackground(Color.WHITE);
+
 		    		image.setVisible(true);
 		    		   
 		    		contentPan.add(image, BorderLayout.CENTER);		

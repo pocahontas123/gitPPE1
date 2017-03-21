@@ -78,6 +78,7 @@ public class AjoutAdherent extends JPanel {
 		this.setSize(500, 400);
 		this.setVisible(true);
     	contentPan.setPreferredSize(dim2);
+		this.setBackground(Color.white);
 
 	    this.initComposant();
 	}
@@ -274,7 +275,10 @@ public class AjoutAdherent extends JPanel {
 	
 	    contentPan.add(AdherentPan, BorderLayout.CENTER);
 	    contentPan.add(boutonPan, BorderLayout.SOUTH);
-	    
+	    contentPan.setBackground(Color.WHITE);
+	    AdherentPan.setBackground(Color.WHITE);
+	    boutonPan.setBackground(Color.WHITE);
+
 	    this.add(contentPan);
 	}
 	
@@ -295,6 +299,7 @@ public class AjoutAdherent extends JPanel {
 	  
 	class BoutonListener implements ActionListener{
 	    public void actionPerformed(ActionEvent e) {
+	    	
 	    	System.out.println("Début BoutonListener");
 	    	
 		    	if(!NomT.getText().isEmpty() && !PrenomT.getText().isEmpty() && !CodePostalT.getText().isEmpty() && !VilleT.getText().isEmpty() && !((JTextField)DateT.getDateEditor().getUiComponent()).getText().isEmpty() && !TelephoneT.getText().isEmpty() && !EmailT.getText().isEmpty() && (String)combo.getSelectedItem()!="Sélectionner..." && patMail.matcher(EmailT.getText()).matches()) {				
@@ -339,10 +344,11 @@ public class AjoutAdherent extends JPanel {
 	
 		    		    image.add(new JLabel(iconM2l));
 		    		    image.add(new JLabel(iconTir));
-			    		   
+			    		image.setBackground(Color.WHITE);
+
 			    		image.setVisible(true);
-			    		   
-			    		contentPan.add(image, BorderLayout.CENTER);		
+
+			    		contentPan.add(image, BorderLayout.CENTER);
 			    	}
 			    	}catch(Exception ex) {
 		    			ex.printStackTrace();

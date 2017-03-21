@@ -1,6 +1,7 @@
 package vue;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -33,6 +34,7 @@ public class AfficherCategorie extends JPanel{
 	    this.setSize(500, 400);
 	    this.setVisible(true);
 	    contentPan.setPreferredSize(dim2);
+		this.setBackground(Color.white);
 
 	    this.initComposant();
 	}
@@ -110,7 +112,10 @@ public class AfficherCategorie extends JPanel{
 	    contentPan.setLayout(new BorderLayout());
 	    contentPan.add(ListeCategories, BorderLayout.NORTH);
 	    contentPan.add(ficheCategoriePan, BorderLayout.CENTER);
-	    
+	    contentPan.setBackground(Color.WHITE);
+	    ListeCategories.setBackground(Color.WHITE);
+	    ficheCategoriePan.setBackground(Color.WHITE);
+
 	    this.add(contentPan);
 	}
 	
@@ -127,7 +132,7 @@ public class AfficherCategorie extends JPanel{
 			   
 				 libelleT.setText(type.getLibelle());
 				 String tarif = String.valueOf(type.getTarif());
-				 prixT.setText(tarif+" euros");
+				 prixT.setText(tarif+" €");
 				 
 			   
 				 TitledBorder bf = BorderFactory.createTitledBorder("Fiche categorie "+ libelleT.getText());

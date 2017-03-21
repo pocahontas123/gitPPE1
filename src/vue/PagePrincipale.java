@@ -1,8 +1,12 @@
 package vue;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.net.URL;
 
 import javax.swing.ButtonGroup;
@@ -16,7 +20,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 
-import model.dataaccesslayer.AdherentDB;
+import controller.M2L;
+import model.dataaccesslayer.AdminDB;
 import model.dataaccesslayer.ConnexionDB;
 
 
@@ -29,14 +34,18 @@ public class PagePrincipale extends JFrame {
 	private ImageIcon iconTir;
 	private JPanel image= new JPanel();
 
-	
-	private JMenuBar menuBar = new JMenuBar();
+
+	//private Dimension dim2 = new Dimension(600, 200);
+
+	private static JMenuBar menuBar = new JMenuBar();
 	private JMenu gestion = new JMenu("Gestion");
 	private JMenu gestionAdherent = new JMenu("Gestion adhérent");
 	private JMenu gestionCategorie = new JMenu("Gestion catégorie");
 	private JMenu rechercheAdherent = new JMenu("Recherche adhérent");
 	private JMenu rapportRecapitulatif = new JMenu("Rapport récapitulatif");
 	
+	private JMenuItem item2 = new JMenuItem("Déconnexion");
+
 	private JMenuItem item1 = new JMenuItem("Quitter");
 	
 	private JRadioButtonMenuItem radioBoutonAfficher1 = new JRadioButtonMenuItem("Afficher");
@@ -71,34 +80,35 @@ public class PagePrincipale extends JFrame {
 		//titre de la Frame
 		this.setTitle("Application Gestion Adherents");
 		//taille de la frame
-		this.setSize(600, 600);
+	//	this.setSize(600, 300);
+		this.setBackground(Color.white);
+
 		
-		//Centre la frame
-		this.setLocationRelativeTo(null);
-		//Empêche le changement de taille de la fenêtre
-		this.setResizable(false);
-		//la fenêtre reste par dessus tout
-		//this.setAlwaysOnTop(true);
+		
 
-		this.contentPane.setLayout(new BorderLayout());
-		      
-		imageM2l = PagePrincipale.class.getResource("/MDL.jpg");
-		imageTir = PagePrincipale.class.getResource("/s-l225.png");
-		iconM2l = new ImageIcon(imageM2l);
-		iconTir = new ImageIcon(imageTir);
-		image.add(new JLabel(iconM2l));
-		image.add(new JLabel(iconTir));
-		image.setVisible(true);
-		contentPane.add(image, BorderLayout.CENTER);
+		
+	    contentPane.setBackground(Color.WHITE);
+		
+		Login login = new Login();
+		contentPane.setLayout(new BorderLayout());
 
+		contentPane.add(login, BorderLayout.CENTER);
+		
 	    this.setContentPane(contentPane);
-	    this.initComposant();
 	    this.setVisible(true);
+        
+
+	    this.initComposant();
 	}
 	
 	
 	
-	private void initComposant(){
+	
+	void initComposant(){
+		
+    	menuBar.setVisible(false);
+
+		
 		//Crée mes boutons
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(radioBoutonAfficher1);
@@ -140,11 +150,17 @@ public class PagePrincipale extends JFrame {
 		//Rajoute à mon menu mes deux sous-menus
 		this.gestion.add(this.gestionAdherent);
 		this.gestion.add(this.gestionCategorie);
+		
+		this.gestion.addSeparator();
+		this.gestion.add(item2);
+		
 		this.gestion.addSeparator();
 
 		//Rajoute à mon menu "Quitter"
 		this.gestion.add(item1);
 		
+		
+
 		this.menuBar.add(gestion);
 		this.menuBar.add(rechercheAdherent);
 		this.menuBar.add(rapportRecapitulatif);
@@ -167,6 +183,8 @@ public class PagePrincipale extends JFrame {
 		radioBoutonRapportAdherentPasPayer12.addActionListener(new jrmListener());
 		
 		item1.addActionListener(new itemListener());
+		item2.addActionListener(new item2Listener());
+
 	  }
 
 	class itemListener implements ActionListener {
@@ -190,6 +208,37 @@ public class PagePrincipale extends JFrame {
 		}
 	
 	
+	class item2Listener implements ActionListener {
+		
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			if (e.getSource() == item2) {
+				 int reponse = JOptionPane.showConfirmDialog(null,
+                         "Voulez-vous déconnecter de l'application",
+                         "Confirmation",
+                         JOptionPane.YES_NO_OPTION,
+                         JOptionPane.QUESTION_MESSAGE);
+    if (reponse==JOptionPane.YES_OPTION){
+    	System.out.println("Choix 3 : Déconnecter de  l'application");
+    	ConnexionDB.closeConnexion();
+    	Login login = new Login();
+    	contentPane.removeAll();
+    	menuBar.setVisible(false);
+    	PagePrincipale.this.setSize(600, 300);
+    	PagePrincipale.this.setLocationRelativeTo(null);
+		//Empêche le changement de taille de la fenêtre
+    	PagePrincipale.this.setResizable(false);
+    	contentPane.add(login, BorderLayout.CENTER);
+
+    	contentPane.revalidate();
+		contentPane.repaint();
+
+		
+    }
+}
+				
+			}
+		}
 	class jrmListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {		
@@ -199,6 +248,7 @@ public class PagePrincipale extends JFrame {
 				
 				AfficherAdherent afficherAdherent = new AfficherAdherent();
 		    	contentPane.removeAll();
+
 		    	contentPane.add(afficherAdherent, BorderLayout.CENTER);
 
 		    	contentPane.revalidate();
@@ -323,4 +373,13 @@ public class PagePrincipale extends JFrame {
 			}
 		}
 	}	
+	public static void setVisibeMenu()
+	{
+		menuBar.setVisible(true);
+	}
+	public   void setTaille(int largeur,int hauteur)
+	{
+		this.pack();
+
+	}
 }

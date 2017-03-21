@@ -1,22 +1,26 @@
 package vue;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.MaskFormatter;
 
 import model.classe.Adherent;
 import model.classe.TypeAdhesion;
@@ -48,6 +52,7 @@ public class ModifierCategorie extends JPanel{
 		this.setSize(500, 400);
 		this.setVisible(true);
     	contentPan.setPreferredSize(dim2);
+		this.setBackground(Color.white);
 
 	    this.initComposant();	
 	}
@@ -99,8 +104,14 @@ public class ModifierCategorie extends JPanel{
 	    prix.setHorizontalAlignment(JLabel.RIGHT);
 	    prix.setPreferredSize(new Dimension(220, 20));
 	    
-	    prixT = new JTextField();
+	    try{
+	    	 
+	    	  MaskFormatter telMask = new MaskFormatter("### €");
+	    	  prixT = new JFormattedTextField(telMask);
+	    	}catch(ParseException e){e.printStackTrace();}
+	  ((JFormattedTextField) prixT).setFocusLostBehavior( JFormattedTextField.PERSIST ); 
 	    
+	   	    
 
 	    libelleT.setPreferredSize(new Dimension(200, 30));
 	    prixT.setPreferredSize(new Dimension(200, 30));
@@ -134,6 +145,11 @@ public class ModifierCategorie extends JPanel{
 	    contentPan.add(ListeCategories, BorderLayout.NORTH);
 	    contentPan.add(AdherentPan, BorderLayout.CENTER);
 	    contentPan.add(boutonPan, BorderLayout.SOUTH);
+	    contentPan.setBackground(Color.WHITE);
+	    ListeCategories.setBackground(Color.WHITE);
+	    AdherentPan.setBackground(Color.WHITE);
+	    boutonPan.setBackground(Color.WHITE);
+
 	    this.add(contentPan);   
 	}
 	
@@ -154,7 +170,7 @@ public class ModifierCategorie extends JPanel{
 	    		
 				libelleT.setText(type.getLibelle());
 				String tarif = String.valueOf(type.getTarif());
-				prixT.setText(tarif+" euros");
+				prixT.setText(tarif);
 				TitledBorder bf = BorderFactory.createTitledBorder("Modifier Categorie "+ libelleT.getText());
 				AdherentPan.setBorder(bf);
 				bf.setTitleFont(police);
@@ -214,7 +230,8 @@ public class ModifierCategorie extends JPanel{
 
 		    		image.add(new JLabel(iconM2l));
 		    		image.add(new JLabel(iconTir));
-			    		   
+		    		image.setBackground(Color.WHITE);
+
 			        image.setVisible(true);
 			    		   
 			        contentPan.add(image, BorderLayout.CENTER);	

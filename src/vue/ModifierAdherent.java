@@ -64,6 +64,7 @@ public class ModifierAdherent extends JPanel{
 		this.setSize(500, 400);
 		this.setVisible(true);
     	contentPan.setPreferredSize(dim2);
+		this.setBackground(Color.white);
 
 	    this.initComposant();
 	}
@@ -300,7 +301,11 @@ public class ModifierAdherent extends JPanel{
 	    contentPan.add(ListeAdherents, BorderLayout.NORTH);
 	    contentPan.add(AdherentPan, BorderLayout.CENTER);
 	    contentPan.add(boutonPan, BorderLayout.SOUTH);
-	    
+	    contentPan.setBackground(Color.WHITE);
+	    ListeAdherents.setBackground(Color.WHITE);
+	    AdherentPan.setBackground(Color.WHITE);
+	    boutonPan.setBackground(Color.WHITE);
+
 	    this.add(contentPan);
 	}
 	
@@ -428,7 +433,8 @@ public class ModifierAdherent extends JPanel{
 
 		    		image.add(new JLabel(iconM2l));
 		    		image.add(new JLabel(iconTir));
-			    		   
+		    		image.setBackground(Color.WHITE);
+
 			        image.setVisible(true);
 			    		   
 			        contentPan.add(image, BorderLayout.CENTER);	

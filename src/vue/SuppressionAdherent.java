@@ -1,6 +1,7 @@
 package vue;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -44,6 +45,7 @@ public class SuppressionAdherent extends JPanel{
 		this.setSize(500, 400);
 		this.setVisible(true);
     	contentPan.setPreferredSize(dim2);
+		this.setBackground(Color.white);
 
 	    this.initComposant();
 	}
@@ -227,7 +229,11 @@ public class SuppressionAdherent extends JPanel{
 	    contentPan.add(ListeAdherents, BorderLayout.NORTH);
 	    contentPan.add(ficheAdherentPan, BorderLayout.CENTER);
 	    contentPan.add(boutonPan, BorderLayout.SOUTH);
-	    
+	    contentPan.setBackground(Color.WHITE);
+	    ListeAdherents.setBackground(Color.WHITE);
+	    ficheAdherentPan.setBackground(Color.WHITE);
+	    boutonPan.setBackground(Color.WHITE);
+
 	    this.add(contentPan);
 	}
 
@@ -317,7 +323,8 @@ public class SuppressionAdherent extends JPanel{
 		
 				    image.add(new JLabel(iconM2l));
 				    image.add(new JLabel(iconTir));
-		    		   
+		    		image.setBackground(Color.WHITE);
+
 		    		image.setVisible(true);
 		    		   
 		    		contentPan.add(image, BorderLayout.CENTER);		

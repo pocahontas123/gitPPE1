@@ -19,6 +19,76 @@ public class AdherentDB {
 	private Statement state = null;
 	private ResultSet result = null;
 	
+	public ArrayList getRecap() {
+		//Établissement de la connexion
+		try {	
+			Class.forName( "com.mysql.jdbc.Driver" );
+			
+		} catch ( ClassNotFoundException e ) {
+			System.out.println( "Erreur chargement du driver: " +e.getMessage() );
+		}
+		
+		int i = 0;
+		ArrayList<ArrayList> k=new ArrayList();
+        
+     
+       		try {
+			String sql = "SELECT typeadhesion.Tarif * COUNT(*) as prixtotalparcat, Libelle , COUNT(*) AS nombreAdparcat FROM `adherent` INNER JOIN typeadhesion ON typeadhesion.idTypeAdhesion = adherent.TypeAdhesion GROUP BY adherent.TypeAdhesion";
+			state = ConnexionDB.getInstance().createStatement();
+			//Etape 4 : exécution requête
+			result = state.executeQuery( sql );
+			
+			//Etape 5 : (parcours Resultset
+			while( result.next() ) {
+				
+				
+			
+				
+					
+				
+				int nbAdhCat = result.getInt( "nombreAdparcat" );
+				String libelle = result.getString( "Libelle" );
+				
+
+				int prixTotCat = result.getInt( "prixtotalparcat" );
+		        ArrayList l=new ArrayList();
+
+				l.add(nbAdhCat);
+		        l.add(libelle);
+		        l.add(prixTotCat);
+		        k.add(i,l);
+				i++;
+
+			}
+		
+
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if (!result.isClosed()) {
+				    try {
+				    	result.close();
+				    } catch (SQLException e) { /* ignoré */}
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		    try {
+				if (!state.isClosed()) {
+				    try {
+				    	state.close();
+				    } catch (SQLException e) { /* ignoré */}
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		return k;
+
+	}
 	public void updatePaiementsAdherents() {
 		
 			//Chargement du driver JDBC pour MySQL

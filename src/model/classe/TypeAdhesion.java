@@ -49,8 +49,9 @@ public class TypeAdhesion {
 	}
 	
 	//méthode
-	public void reductionTarif(int reduction) {
+	public int reductionTarif(int reduction) {
 		double reduc = 1 - (reduction / 100.0);
 		tarif = (int)Math.round(tarif * reduc);
+		return tarif;
 	}
 }

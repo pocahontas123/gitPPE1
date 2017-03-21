@@ -1,20 +1,24 @@
 package vue;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
+import java.text.ParseException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.MaskFormatter;
 
 import model.classe.TypeAdhesion;
 import model.dataaccesslayer.TypeAdhesionDB;
@@ -41,6 +45,7 @@ public class AjouterCategorie extends JPanel{
 		this.setSize(500, 400);
 		this.setVisible(true);
     	contentPan.setPreferredSize(dim2);
+		this.setBackground(Color.white);
 
 	    this.initComposant();
 	}
@@ -68,7 +73,12 @@ public class AjouterCategorie extends JPanel{
 	    prix.setHorizontalAlignment(JLabel.RIGHT);
 	    prix.setPreferredSize(new Dimension(220, 20));
 	    
-	    prixT = new JTextField();
+	    try{
+	    	 
+	    	  MaskFormatter telMask = new MaskFormatter("### €");
+	    	  prixT = new JFormattedTextField(telMask);
+	    	}catch(ParseException e){e.printStackTrace();}
+	    ((JFormattedTextField) prixT).setFocusLostBehavior( JFormattedTextField.PERSIST ); 
 	    
 	    libelleT.setPreferredSize(new Dimension(200, 30));
 	    prixT.setPreferredSize(new Dimension(200, 30));
@@ -92,6 +102,10 @@ public class AjouterCategorie extends JPanel{
 	
 	    contentPan.add(AdherentPan, BorderLayout.CENTER);
 	    contentPan.add(boutonPan, BorderLayout.SOUTH);
+	    contentPan.setBackground(Color.WHITE);
+	    AdherentPan.setBackground(Color.WHITE);
+	    boutonPan.setBackground(Color.WHITE);
+
 	    this.add(contentPan);
 	    
 	}
@@ -110,9 +124,15 @@ public class AjouterCategorie extends JPanel{
 	    	if(!libelleT.getText().isEmpty() && !prixT.getText().isEmpty()) {	
 	    		System.out.println("Si zones de text non vides: ");
 	    		boolean resutlVerif;
-	    		String tarif = prixT.getText();
 
-		    	TypeAdhesion type = new TypeAdhesion(libelleT.getText(), Integer.parseInt(tarif));
+	    		
+	    		String[] splitArray = null;
+	    		 String nomPrenom= prixT.getText();
+	    		 splitArray = nomPrenom.split(" ");
+				    int tarif = Integer.parseInt(splitArray[0]); 
+
+	    		
+		    	TypeAdhesion type = new TypeAdhesion(libelleT.getText(),tarif);
 		    	TypeAdhesionDB typeDB = new TypeAdhesionDB();
 		    	resutlVerif = typeDB.saveTypeAdhesion(type);
 		    	
@@ -137,7 +157,8 @@ public class AjouterCategorie extends JPanel{
 
 	    		    image.add(new JLabel(iconM2l));
 	    		    image.add(new JLabel(iconTir));
-		    		   
+		    		image.setBackground(Color.WHITE);
+
 		    		image.setVisible(true);
 		    		   
 		    		contentPan.add(image, BorderLayout.CENTER);		

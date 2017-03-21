@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import vue.AjoutAdherent;
+import vue.Login;
 import vue.PagePrincipale;
 import model.classe.Adherent;
 import model.classe.TypeAdhesion;
@@ -21,6 +22,8 @@ import model.dataaccesslayer.ConnexionDB;
 import model.dataaccesslayer.TypeAdhesionDB;
 
 public class M2L  {
+	public static PagePrincipale frame=null;
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -43,9 +46,12 @@ public class M2L  {
 					
 					}
 					adminDB.updateDateDerVisite(date);
-					final PagePrincipale frame = new PagePrincipale();
-					frame.setSize(600, 600);
-
+					frame = new PagePrincipale();
+					frame.setSize(600, 300);
+					//Centre la frame
+					frame.setLocationRelativeTo(null);
+					//Empêche le changement de taille de la fenêtre
+					frame.setResizable(false);
 					//fermeture de l'application au clic sur le bouton-croix rouge
 					frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 					frame.addWindowListener(new WindowAdapter(){

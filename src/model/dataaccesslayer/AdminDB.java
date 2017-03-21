@@ -14,6 +14,64 @@ public class AdminDB {
 	private Statement state = null;
 	private ResultSet result = null;
 	
+	
+	public boolean connexion(String utilisateur, String motdepasse) {
+		//Établissement de la connexion
+		int count = 0;
+		boolean valeur = false;
+		try {
+			Class.forName( "com.mysql.jdbc.Driver" );
+		
+		} catch ( ClassNotFoundException e ) {
+			System.out.println( "Erreur chargement du driver: " +e.getMessage() );	
+		}
+		
+		
+		try {
+			String sql = "SELECT COUNT(*) AS nb FROM administrateur WHERE login = '"+utilisateur+"' AND motdepasse = '"+motdepasse+"'";
+			state = ConnexionDB.getInstance().createStatement();
+			result = state.executeQuery( sql );
+			
+			//Etape 5 : (parcours Resultset
+			while( result.next() ) {
+				count = result.getInt( "nb" );
+			}
+			System.out.println(count);
+			if(count != 0) {
+				valeur = true;
+			}else {
+				valeur = false;
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if (!result.isClosed()) {
+				    try {
+				    	result.close();
+				    } catch (SQLException e) { /* ignoré */}
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		    try {
+				if (!state.isClosed()) {
+				    try {
+				    	state.close();
+				    } catch (SQLException e) { /* ignoré */}
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	        	
+		}
+		return valeur;
+	}
+	
+	
 	public Date getDateDerVisite() {
 		//Chargement du driver JDBC pour MySQL
 		try {	

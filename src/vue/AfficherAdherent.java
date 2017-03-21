@@ -1,6 +1,7 @@
 package vue;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -35,7 +36,7 @@ public class AfficherAdherent extends JPanel{
 	    this.setSize(500, 400);
 	    this.setVisible(true);
 	    contentPan.setPreferredSize(dim2);
-
+	    this.setBackground(Color.WHITE);
 	    this.initComposant();
 	}
 	
@@ -206,7 +207,10 @@ public class AfficherAdherent extends JPanel{
 	    contentPan.setLayout(new BorderLayout());
 	    contentPan.add(ListeAdherents, BorderLayout.NORTH);
 	    contentPan.add(ficheAdherentPan, BorderLayout.CENTER);
-	    
+	    contentPan.setBackground(Color.WHITE);
+	    ListeAdherents.setBackground(Color.WHITE);
+	    ficheAdherentPan.setBackground(Color.WHITE);
+
 	    this.add(contentPan);
 	}
 	

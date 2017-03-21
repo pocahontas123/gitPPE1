@@ -1,6 +1,7 @@
 package vue;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -31,14 +32,14 @@ public class RechercheNom extends JPanel{
 	private JComboBox combo;
 	private Font police, police1;
 	  private Dimension dim = new Dimension(120, 20);
-	  private Dimension dim2 = new Dimension(500, 450);
+	  private Dimension dim2 = new Dimension(500, 460);
 	
 	
 	public RechercheNom() { 
 	    this.setSize(500, 500);
 	    this.setVisible(true);
 	    contentPan.setPreferredSize(dim2);
-
+this.setBackground(Color.WHITE);
 	    this.initComposant();
 	}
 	
@@ -229,14 +230,17 @@ public class RechercheNom extends JPanel{
 	    contentPan.add(RechercheNomPan, BorderLayout.NORTH);
 	    contentPan.add(ListeAdherentsPan, BorderLayout.CENTER);
 	    contentPan.add(FicheAdherentPan, BorderLayout.SOUTH);
-	    
+	    contentPan.setBackground(Color.WHITE);
+	    RechercheNomPan.setBackground(Color.WHITE);
+	    ListeAdherentsPan.setBackground(Color.WHITE);
+	    FicheAdherentPan.setBackground(Color.WHITE);
+
 	    //Ajout de la page en elle même
 	    this.add(contentPan);
 	}
 	
 	class BoutonRechercheActionListener implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-
 			ArrayList<String> items = new ArrayList<String>();
 			if(!NomT.getText().isEmpty())
 	    	{	
@@ -289,7 +293,7 @@ public class RechercheNom extends JPanel{
 	class BoutonListenerCombo implements ActionListener{
 	    public void actionPerformed(ActionEvent e) {
 	    	if ((String)combo.getSelectedItem() != "Sélectionner...") {
-	    		dim2 = new Dimension(500, 450);
+	    		dim2 = new Dimension(500, 460);
 			    contentPan.setPreferredSize(dim2);
 	    		ListeAdherentsPan.setVisible(true);
 	    		FicheAdherentPan.setVisible(true);

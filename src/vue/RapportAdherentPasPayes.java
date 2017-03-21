@@ -1,6 +1,7 @@
 package vue;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -35,6 +36,7 @@ public class RapportAdherentPasPayes extends JPanel{
 	    this.setSize(500, 400);
 	    this.setVisible(true);
 	    contentPan.setPreferredSize(dim2);
+		this.setBackground(Color.white);
 
 	    this.initComposant();
 	}
@@ -245,7 +247,11 @@ public class RapportAdherentPasPayes extends JPanel{
 
 	    contentPan.add(ficheAdherentPan, BorderLayout.SOUTH);
 	    
-	    
+	    contentPan.setBackground(Color.WHITE);
+	    nbAdhPan.setBackground(Color.WHITE);
+	    ListeAdherents.setBackground(Color.WHITE);
+	    ficheAdherentPan.setBackground(Color.WHITE);
+
 	    this.add(contentPan);
 	}
 	

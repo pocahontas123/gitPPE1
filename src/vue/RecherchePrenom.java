@@ -1,6 +1,7 @@
 package vue;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -39,6 +40,7 @@ public class RecherchePrenom extends JPanel{
 	    this.setSize(500, 500);
 	    this.setVisible(true);
 	    contentPan.setPreferredSize(dim2);
+		this.setBackground(Color.white);
 
 	    this.initComposant();
 	}
@@ -231,7 +233,11 @@ public class RecherchePrenom extends JPanel{
 	    contentPan.add(RecherchePrenomPan, BorderLayout.NORTH);
 	    contentPan.add(ListeAdherentsPan, BorderLayout.CENTER);
 	    contentPan.add(FicheAdherentPan, BorderLayout.SOUTH);
-	    
+	    contentPan.setBackground(Color.WHITE);
+	    RecherchePrenomPan.setBackground(Color.WHITE);
+	    ListeAdherentsPan.setBackground(Color.WHITE);
+	    FicheAdherentPan.setBackground(Color.WHITE);
+
 	    //Ajout de la page en elle même
 	    this.add(contentPan);
 	}
