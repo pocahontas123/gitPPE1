@@ -223,9 +223,9 @@ public class PagePrincipale extends JFrame {
     	ConnexionDB.closeConnexion();
     	Login login = new Login();
     	contentPane.removeAll();
-    	menuBar.setVisible(false);
-    	PagePrincipale.this.setSize(600, 300);
-    	PagePrincipale.this.setLocationRelativeTo(null);
+    	//menuBar.setVisible(false);
+    	M2L.frame.setSize(600, 300);
+    	M2L.frame.setLocationRelativeTo(null);
 		//Empêche le changement de taille de la fenêtre
     	PagePrincipale.this.setResizable(false);
     	contentPane.add(login, BorderLayout.CENTER);
@@ -377,9 +377,5 @@ public class PagePrincipale extends JFrame {
 	{
 		menuBar.setVisible(true);
 	}
-	public   void setTaille(int largeur,int hauteur)
-	{
-		this.pack();
-
-	}
+	
 }

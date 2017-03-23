@@ -2,6 +2,7 @@ package model.classe;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.Calendar;
 
 public class Adherent {
 	//variables membres
@@ -97,5 +98,19 @@ public class Adherent {
 	public void setPaiement(boolean paiement) {
 		this.paiement = paiement;
 	}
+	public  int calculAge()
+	{
+		Calendar curr = Calendar.getInstance();
+	Calendar naissance = Calendar.getInstance();
+	naissance.setTime(this.getAnneeNaissance());
+		int age;
+		age=curr.get(Calendar.YEAR) - naissance.get(Calendar.YEAR) ;
+		if((curr.get(Calendar.MONTH)==naissance.get(Calendar.MONTH) && curr.get(Calendar.DAY_OF_MONTH)<naissance.get(Calendar.DAY_OF_MONTH)) || curr.get(Calendar.MONTH)<naissance.get(Calendar.MONTH)) 
+		{
+			age--;
+		}
+			return age;
+	}
+	
 	
 }
