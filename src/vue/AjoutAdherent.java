@@ -41,9 +41,9 @@ import com.toedter.calendar.JDateChooser;
 
 import java.util.regex.Pattern;
 
-
-
+//Hérite d'un JPanel
 public class AjoutAdherent extends JPanel {
+	//Variables membres
 	private JPanel contentPan = new JPanel();
 	private JPanel boutonPan;
 
@@ -64,9 +64,9 @@ public class AjoutAdherent extends JPanel {
 	  
 	private JPanel AdherentPan ;  
 	private JLabel TypeAdhesion, Nom, Prenom, CodePostal,  Ville, DateNaissance, Telephone, Email, Paiement;
-	  private Pattern patMail = Pattern.compile("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$");
-
-	  /**
+	//regex pour vérifier le mail
+	private Pattern patMail = Pattern.compile("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$");
+	/**
 	 * Launch the application.
 	 */
 	
@@ -74,6 +74,8 @@ public class AjoutAdherent extends JPanel {
 	/**
 	 * Create the frame.
 	 */
+	
+	//Constructeur par défaut
 	public AjoutAdherent() {
 		this.setSize(500, 400);
 		this.setVisible(true);
@@ -83,11 +85,12 @@ public class AjoutAdherent extends JPanel {
 	    this.initComposant();
 	}
 	
-	
-	
+	//Crée et initialise les composants de la page
 	private void initComposant(){
+		//Crée une police
 	    Font police = new Font("Arial", Font.BOLD, 20);
 	    
+	    //Création et initialisation des JPanel (gauche) et des JTextField associés (droite)
 	    AdherentPan = new JPanel();
 	    AdherentPan.setPreferredSize(new Dimension(165, 225));
 	    TitledBorder titleBorder = BorderFactory.createTitledBorder("Ajout Adherent");
@@ -113,12 +116,13 @@ public class AjoutAdherent extends JPanel {
 	    CodePostal.setHorizontalAlignment(JLabel.RIGHT);
 	    CodePostal.setPreferredSize(new Dimension(220, 20));
 	    
-
-	    try{
-	    	 
-	    	  MaskFormatter telMask = new MaskFormatter("#####");
-	    	  CodePostalT = new JFormattedTextField(telMask);
-	    	}catch(ParseException e){e.printStackTrace();}
+	    //Masque pour le code postale (5 chiffres)
+	    try{ 
+	    	MaskFormatter telMask = new MaskFormatter("#####");
+	    	CodePostalT = new JFormattedTextField(telMask);
+	    	
+	    }catch(ParseException e){e.printStackTrace();
+	    }
 	    
 
 	    Ville = new JLabel("Ville : ");
@@ -148,15 +152,13 @@ public class AjoutAdherent extends JPanel {
 	    Telephone.setHorizontalAlignment(JLabel.RIGHT);
 	    Telephone.setPreferredSize(new Dimension(220, 20));
 	    
-	    try{
-	    	 
-	    	  MaskFormatter telMask = new MaskFormatter("0#.##.##.##.##");
-	    	   TelephoneT = new JFormattedTextField(telMask);
-	    	}catch(ParseException e){e.printStackTrace();}
-	    
-	    
-	   
-	    
+	    //Masque pour le téléphone ("0 . . . . ")
+	    try{ 
+	    	MaskFormatter telMask = new MaskFormatter("0#.##.##.##.##");
+	    	TelephoneT = new JFormattedTextField(telMask);
+	    	
+	    }catch(ParseException e){e.printStackTrace();
+	    }
 	    
 	    Email = new JLabel("Email : ");
 	    Email.setFont(police);
@@ -173,21 +175,23 @@ public class AjoutAdherent extends JPanel {
 	    combo10 = new JComboBox();
 	    combo10.addItem("oui");
 	    combo10.addItem("non");
-	    
-	    
+	     
 	    combo = new JComboBox();
 	    
 	    combo.setPreferredSize(new Dimension(100, 20));
+	    
 	    TypeAdhesionDB adhesionDB = new TypeAdhesionDB();
 		ArrayList adhesion = new ArrayList();
-	
+		//Récupère les différents types d'adhésion (catégories)
 		adhesion = adhesionDB.getTypeAdhesions();
 		
 		combo.addItem("Sélectionner..."); 
 	    for(int i = 0; i < adhesion.size(); i++) {
+	    	//Affiche le libelle des différentes catégories contenues dans l'objet "adhesion"
 	    	combo.addItem(((TypeAdhesion) adhesion.get(i)).getLibelle());
 	    }               
-	     
+	    
+	    //Gère la taille des différents JTextField
 	    NomT.setPreferredSize(new Dimension(200, 30));
 	    PrenomT.setPreferredSize(new Dimension(200, 30));
 	    CodePostalT.setPreferredSize(new Dimension(200, 30));
@@ -197,7 +201,8 @@ public class AjoutAdherent extends JPanel {
 	    EmailT.setPreferredSize(new Dimension(200, 30));
 	    combo10.setPreferredSize(new Dimension(200, 30));
 	    combo.setPreferredSize(new Dimension(200, 30));
-	
+	    
+	    //Ajoute les différents éléments aux JPanel AdherentPan
 	    AdherentPan.add(Nom);
 	    AdherentPan.add(NomT);
 	    AdherentPan.add(Prenom);
@@ -222,59 +227,63 @@ public class AjoutAdherent extends JPanel {
 	
 	    b.setPreferredSize(dim);
 	    raz.setPreferredSize(dim);
+	    
+	    //Deux listener sur les deux boutons "Envoyer" et "RAZ"
 	    b.addActionListener(new BoutonListener());
 	    raz.addActionListener(new BoutonListenerRaz());
 	    
-	
+	    //Ajoute un "Focus" listener au JTextField Email
 	    EmailT.addFocusListener(new FocusListener() {
 	          public void focusLost(FocusEvent e) {
-	      	    if (!patMail.matcher(EmailT.getText()).matches()) {
-	      	    	EmailT.setForeground(Color.red);
+	        	  //Si mon EmailT JTextField ne coorespond pas au patern regex alors
+	        	  if (!patMail.matcher(EmailT.getText()).matches()) {
+	        		  //je colore l'email en rouge
+	        		  EmailT.setForeground(Color.red);
+	        		  //j'affiche une pop-up avec le message "Email Invalide!"
 	            	  JOptionPane jop3 = new JOptionPane();
 	            		
-			    		jop3.showMessageDialog(null, "Email Invalide!", "Erreur", JOptionPane.ERROR_MESSAGE);	
+			    	  jop3.showMessageDialog(null, "Email Invalide!", "Erreur", JOptionPane.ERROR_MESSAGE);	
 	              }
 	          }
-
+	          
+	          //Quand je suis dans le JTextField, mon Email devient noir
 	          public void focusGained(FocusEvent e) {
 	      	    	EmailT.setForeground(Color.black);
-
 	          }
 	      });
 	    
-	    
+	    //Focus listener sur la partie date
 	    ((JTextField)DateT.getDateEditor().getUiComponent()).addFocusListener(new FocusListener() {
 	          public void focusLost(FocusEvent e) {
-	        	  if(!((JTextField)DateT.getDateEditor().getUiComponent()).getText().isEmpty())
-	        	  {
-	        	try{
-					java.sql.Date dateDB = new java.sql.Date(DateT.getDate().getTime());
+	        	  if(!((JTextField)DateT.getDateEditor().getUiComponent()).getText().isEmpty()) {
+	        		  try{
+	        			  java.sql.Date dateDB = new java.sql.Date(DateT.getDate().getTime());
 
-	        	}catch(Exception ex) {
-	    			ex.printStackTrace();
-	        		 JOptionPane jop3 = new JOptionPane();
-	            		
-			    		jop3.showMessageDialog(null, "Date de Naissance Invalide!", "Erreur", JOptionPane.ERROR_MESSAGE);
-	        	}	
-	        		 
+			          }catch(Exception ex) {
+			        	  ex.printStackTrace();
+			        	  JOptionPane jop3 = new JOptionPane();
+			            		
+					      jop3.showMessageDialog(null, "Date de Naissance Invalide!", "Erreur", JOptionPane.ERROR_MESSAGE);
+			          }	
+	        	  }
 	          }
-	          }
+	          
 	          public void focusGained(FocusEvent e) {
-	        	  
-
 	          }
 	      });
-	    
-
 	    
 	    boutonPan = new JPanel();
 	    boutonPan.add(b);
 	    boutonPan.add(raz);
-	
+	    
+	    //Création du BorderLayout "contentPan"
 	    contentPan.setLayout(new BorderLayout());
 	
+	    //Assigne AdherentPan (CENTER) et boutonPan (SOUTH) à "contentPan"
 	    contentPan.add(AdherentPan, BorderLayout.CENTER);
 	    contentPan.add(boutonPan, BorderLayout.SOUTH);
+	    
+	    //Couleur de fond
 	    contentPan.setBackground(Color.WHITE);
 	    AdherentPan.setBackground(Color.WHITE);
 	    boutonPan.setBackground(Color.WHITE);
@@ -282,11 +291,10 @@ public class AjoutAdherent extends JPanel {
 	    this.add(contentPan);
 	}
 	
-
-	
-	
+	//Listener du bouton "RAZ"
 	class BoutonListenerRaz implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
+			//On vide tous les texts du formulaire
 			NomT.setText("");
 			PrenomT.setText("");
 			CodePostalT.setText("");
@@ -296,19 +304,23 @@ public class AjoutAdherent extends JPanel {
 			((JTextField)DateT.getDateEditor()).setText("");	
 	    }
 	}
-	  
+	
+	//Listener du bouton b
 	class BoutonListener implements ActionListener{
 	    public void actionPerformed(ActionEvent e) {
 	    	
 	    	System.out.println("Début BoutonListener");
-	    	
+	    		//Si les élements de mon formulaire ne sont pas vide
 		    	if(!NomT.getText().isEmpty() && !PrenomT.getText().isEmpty() && !CodePostalT.getText().isEmpty() && !VilleT.getText().isEmpty() && !((JTextField)DateT.getDateEditor().getUiComponent()).getText().isEmpty() && !TelephoneT.getText().isEmpty() && !EmailT.getText().isEmpty() && (String)combo.getSelectedItem()!="Sélectionner..." && patMail.matcher(EmailT.getText()).matches()) {				
 		    		System.out.println("Si zones de text non vides: ");
+		    		
 		    		boolean resutlVerif;
 			    	TypeAdhesion typeAd ;
 			    	TypeAdhesionDB adhesionDB = new TypeAdhesionDB();
+			    	//Le type d'adhesion sélectionné dans la liste
 			    	typeAd = adhesionDB.getTypeAdhesion((String)combo.getSelectedItem());
 			    	
+			    	//Conversion du paiement pour la bdd
 			    	boolean paiement;
 			    	if((String)combo10.getSelectedItem() == "oui") {
 			    		paiement = true;
@@ -318,55 +330,62 @@ public class AjoutAdherent extends JPanel {
 			    	
 			    	try{
 						java.sql.Date dateDB = new java.sql.Date(DateT.getDate().getTime());
-
-		        	Adherent ad = new Adherent(NomT.getText(), PrenomT.getText(), CodePostalT.getText(), VilleT.getText(),dateDB, typeAd, TelephoneT.getText(), EmailT.getText(), paiement);
-			    	AdherentDB adDb = new AdherentDB();
-			    	resutlVerif = adDb.saveAdherent(ad);
+						
+						//Je crée un adhérent avec les infos
+			        	Adherent ad = new Adherent(NomT.getText(), PrenomT.getText(), CodePostalT.getText(), VilleT.getText(),dateDB, typeAd, TelephoneT.getText(), EmailT.getText(), paiement);
+				    	AdherentDB adDb = new AdherentDB();
+				    	//Je sauvegarde mon adhérent
+				    	resutlVerif = adDb.saveAdherent(ad);
 			    	
-			    	if (resutlVerif) {
-			    		JOptionPane jop = new JOptionPane();
-	
-			    		jop.showMessageDialog(null, "Adhérent déjà existant ", "Erreur", JOptionPane.ERROR_MESSAGE);
-			    	}else {
-			    		JOptionPane jop1 = new JOptionPane();
-	
-			    		jop1.showMessageDialog(null, "L'adhérent "+ ad.getNom()+ " "+ ad.getPrenom()+" est enregistré avec succès ", "Information", JOptionPane.INFORMATION_MESSAGE);
-			    	
-			    		contentPan.removeAll();
-			    		contentPan.revalidate();
-			    		contentPan.repaint();
-			    		   
-		    			URL imageM2l = PagePrincipale.class.getResource("/MDL.jpg");
-		    			URL  imageTir = PagePrincipale.class.getResource("/s-l225.png");
-		    			ImageIcon  iconM2l = new ImageIcon(imageM2l);
-		    			ImageIcon iconTir = new ImageIcon(imageTir);
-		    			JPanel image = new JPanel();
-	
-		    		    image.add(new JLabel(iconM2l));
-		    		    image.add(new JLabel(iconTir));
-			    		image.setBackground(Color.WHITE);
-
-			    		image.setVisible(true);
-
-			    		contentPan.add(image, BorderLayout.CENTER);
-			    	}
+				    	//Si false
+				    	if(resutlVerif) {
+				    		JOptionPane jop = new JOptionPane();
+				    		//pop-up "Adhérent déjà existant"
+				    		jop.showMessageDialog(null, "Adhérent déjà existant ", "Erreur", JOptionPane.ERROR_MESSAGE);
+				    	}else {
+				    		JOptionPane jop1 = new JOptionPane();
+				    		//pop-up "Adhérent ajouté"
+				    		jop1.showMessageDialog(null, "L'adhérent "+ ad.getNom()+ " "+ ad.getPrenom()+" est enregistré avec succès ", "Information", JOptionPane.INFORMATION_MESSAGE);
+				    	
+				    		//Vide le contentPan
+				    		contentPan.removeAll();
+				    		contentPan.revalidate();
+				    		contentPan.repaint();
+				    		
+				    		//Récupère et crée un JPanel qui contiendra mes deux images
+			    			URL imageM2l = PagePrincipale.class.getResource("/MDL.jpg");
+			    			URL  imageTir = PagePrincipale.class.getResource("/s-l225.png");
+			    			ImageIcon  iconM2l = new ImageIcon(imageM2l);
+			    			ImageIcon iconTir = new ImageIcon(imageTir);
+			    			JPanel image = new JPanel();
+			    			
+			    			//Mon JPanel contient mes icones
+			    		    image.add(new JLabel(iconM2l));
+			    		    image.add(new JLabel(iconTir));
+			    		    //couleur de fond
+				    		image.setBackground(Color.WHITE);
+				    		//image visible
+				    		image.setVisible(true);
+				    		
+				    		//Place l'image au Centre
+				    		contentPan.add(image, BorderLayout.CENTER);
+				    	}
+				    	
 			    	}catch(Exception ex) {
-		    			ex.printStackTrace();
-		        		 JOptionPane jop3 = new JOptionPane();
+			    		ex.printStackTrace();
+			    		//Date pas valide
+		        		JOptionPane jop3 = new JOptionPane();
 		            		
-				    		jop3.showMessageDialog(null, "Date de Naissance Invalide!", "Erreur", JOptionPane.ERROR_MESSAGE);
+				    	jop3.showMessageDialog(null, "Date de Naissance Invalide!", "Erreur", JOptionPane.ERROR_MESSAGE);
 		        	}
 		    	}else {
+		    		//champ(s) vide(s)
 		    		JOptionPane jop3 = new JOptionPane();
 	
 		    		jop3.showMessageDialog(null, "Champ(s) Vide(s) et/ou Invalide(s)", "Erreur", JOptionPane.ERROR_MESSAGE);	
-		    	}
-		    
+		        }  
 		}	
 	}
 	
 	
 }
-
-
-

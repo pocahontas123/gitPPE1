@@ -5,16 +5,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnexionDB {
+	//Variables membres
+	private static String url = "jdbc:mysql://localhost/adherentppe1?useSSL=false";
+	private static String user = "root";
+	private static String passwd = "";
+	private static Connection connect;
+	private static ConnexionDB instance = new ConnexionDB();
 
-  private static String url = "jdbc:mysql://localhost/adherentppe1?useSSL=false";
-  private static String user = "root";
-  private static String passwd = "";
-  private static Connection connect;
-  private static ConnexionDB instance = new ConnexionDB();
-
+	//Se connect à la bdd
 	private ConnexionDB() {
 		try{
-		
 			connect = DriverManager.getConnection(url, user, passwd);
 		
 		} catch (SQLException e) {
@@ -22,6 +22,7 @@ public class ConnexionDB {
 		}
 	}
 	
+	//Crée une instance de la connection
 	public static Connection getInstance() throws SQLException{
 		if (connect.isClosed()) {
 			instance = new ConnexionDB();
@@ -30,8 +31,8 @@ public class ConnexionDB {
 		return connect;
 	}
 	
+	//ferme la connexion
 	public static void closeConnexion()  {
-	
 		try {
 			if(!connect.isClosed()) {
 				try {
@@ -44,7 +45,8 @@ public class ConnexionDB {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
+		}	
 	}
+	
+	
 }

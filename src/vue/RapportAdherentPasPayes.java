@@ -23,7 +23,9 @@ import model.dataaccesslayer.AdherentDB;
 
 import com.toedter.calendar.JDateChooser;
 
-public class RapportAdherentPasPayes extends JPanel{
+//hérite de JPanel
+public class RapportAdherentPasPayes extends JPanel {
+	//variables membres
 	private JPanel contentPan = new JPanel();
 	private JPanel ListeAdherents, ficheAdherentPan, nbAdhPan;
 	private JLabel Nom, Prenom, CodePostal, Ville,  DateNaissance, TypeAdhesion, Telephone, Email, Paiement, listeAd, adhP, adhNP;
@@ -32,20 +34,22 @@ public class RapportAdherentPasPayes extends JPanel{
 	private JComboBox combo;
     private Dimension dim2 = new Dimension(500, 180);
     
+    //constructeur par défaut
 	public RapportAdherentPasPayes() { 
 	    this.setSize(500, 400);
 	    this.setVisible(true);
 	    contentPan.setPreferredSize(dim2);
 		this.setBackground(Color.white);
-
+		
 	    this.initComposant();
 	}
 	
 	private void initComposant() {
+		//création police
 		police = new Font("Arial", Font.BOLD, 20);
-	     police1 = new Font("Arial", Font.BOLD, 18);		
+	    police1 = new Font("Arial", Font.BOLD, 18);		
 
-	     
+	    //Création des JPanel etc
 	    ListeAdherents = new JPanel();
 	    ListeAdherents.setPreferredSize(new Dimension(220, 80));
 	    TitledBorder titleBorder = BorderFactory.createTitledBorder("Liste Adherents qui n'ont pas payé");
@@ -59,7 +63,6 @@ public class RapportAdherentPasPayes extends JPanel{
 	    titleBorder1.setTitleFont(police);
 	    
 	 
-	    
 	    nbAdhPan = new JPanel();
 	    nbAdhPan.setPreferredSize(new Dimension(220, 100));
 	    TitledBorder titleBorder4 = BorderFactory.createTitledBorder("Rapport Payement Adhérent ");
@@ -83,13 +86,13 @@ public class RapportAdherentPasPayes extends JPanel{
 	    adhNP.setHorizontalAlignment(JLabel.RIGHT);
 	    adhNP.setPreferredSize(new Dimension(240, 20));
 	    
-	    adhNPT =new JLabel(Integer.toString(adDb.compterAdherents()-adDb.compterAdherentsPayes())+" / "+Integer.toString(adDb.compterAdherents()));
+	    //adhérent non-payé/adhérent total
+	    adhNPT = new JLabel(Integer.toString(adDb.compterAdherents()-adDb.compterAdherentsPayes())+" / "+Integer.toString(adDb.compterAdherents()));
 	    adhNPT.setFont(police1);
 	    adhNPT.setHorizontalAlignment(JLabel.LEFT);
 	    adhNPT.setPreferredSize(new Dimension(220, 20));
 	    
-	    
-	    
+	     
 	    listeAd = new JLabel("Liste des Adhérents : ");
 	    listeAd.setFont(police1);
 	    listeAd.setHorizontalAlignment(JLabel.RIGHT);
@@ -194,6 +197,7 @@ public class RapportAdherentPasPayes extends JPanel{
 	    PaiementT.setHorizontalAlignment(JLabel.LEFT);
 	    PaiementT.setPreferredSize(new Dimension(220, 20));
 	    
+	    //Ajout aux JPanel leurs éléments
 	    nbAdhPan.add(adhP);
 	    nbAdhPan.add(adhPT);
 	    nbAdhPan.add(adhNP);
@@ -229,24 +233,27 @@ public class RapportAdherentPasPayes extends JPanel{
 		
 		combo.addItem("Sélectionner...");
 	    for(int i = 0; i < adherent.size(); i++) {
+	    	//affiche les adherents qui n'ont pas payés avec l'objet adherent
 	    	combo.addItem(((Adherent) adherent.get(i)).getNom()+" "+((Adherent) adherent.get(i)).getPrenom());
 	    }
-	    combo.setPreferredSize(new Dimension(200, 30));
-	    
+	    combo.setPreferredSize(new Dimension(200, 30));   
+	    //Listener sur le combo
 	    combo.addActionListener(new BoutonListenerCombo());
 
+	    //Gestion visibilité
 	    nbAdhPan.setVisible(true);
 	    ListeAdherents.setVisible(true);
 	    ficheAdherentPan.setVisible(false);
 	    ListeAdherents.add(listeAd);
 
 	    ListeAdherents.add(combo);
+	    //Création BorderLayout
 	    contentPan.setLayout(new BorderLayout());
 	    contentPan.add(nbAdhPan, BorderLayout.NORTH);
 	    contentPan.add(ListeAdherents, BorderLayout.CENTER);
-
 	    contentPan.add(ficheAdherentPan, BorderLayout.SOUTH);
 	    
+	    //couleur de fond
 	    contentPan.setBackground(Color.WHITE);
 	    nbAdhPan.setBackground(Color.WHITE);
 	    ListeAdherents.setBackground(Color.WHITE);
@@ -255,15 +262,17 @@ public class RapportAdherentPasPayes extends JPanel{
 	    this.add(contentPan);
 	}
 	
-	
+	//Listener du combo
 	class BoutonListenerCombo implements ActionListener{
 	    public void actionPerformed(ActionEvent e) {
+	    	//Si je n'ai pas sélectionner "sélectionner..." alors
 	    	 if ((String)combo.getSelectedItem() != "Sélectionner...") {
 	    		 dim2 = new Dimension(500, 500);
-				    contentPan.setPreferredSize(dim2);
+				 contentPan.setPreferredSize(dim2);
 				
 	    		 ficheAdherentPan.setVisible(true);
 	    		 
+	    		 //récupère les informations sur l'adhérent dans l'objet "ad"
 	    		 AdherentDB adDb = new AdherentDB();
 	    		 Adherent ad;
 	    		 String[] splitArray = null;
@@ -271,6 +280,7 @@ public class RapportAdherentPasPayes extends JPanel{
 	    		 splitArray = nomPrenom.split(" ");
 	    		 ad = adDb.getAdherent(splitArray[0],splitArray[1]);
 			   
+	    		 //Remplit le formulaire
 				 NomT.setText(ad.getNom());
 				 PrenomT.setText(ad.getPrenom());
 				 CodePostalT.setText(ad.getCodePostal());
@@ -280,12 +290,13 @@ public class RapportAdherentPasPayes extends JPanel{
 				 TelephoneT.setText(ad.getTelephone());
 				 EmailT.setText(ad.getEmail());
 				 
+				 //Converti 
 				 if(String.valueOf(ad.getPaiement()) == String.valueOf(false)) {
 					 PaiementT.setText("non");
 				 }else {
 					 PaiementT.setText("oui");
 				 }
-			   
+				 
 				 TitledBorder bf = BorderFactory.createTitledBorder("Fiche Adherent "+ NomT.getText() +" "+ PrenomT.getText());
 				 ficheAdherentPan.setBorder(bf);
 				 bf.setTitleFont(police);

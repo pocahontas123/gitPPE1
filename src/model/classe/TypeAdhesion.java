@@ -15,6 +15,7 @@ public class TypeAdhesion {
 	//constructeur sans idTypeAdhesion (-1)
 	public TypeAdhesion(String libelle, int tarif) {
 		this.idTypeAdhesion = -1;
+		
 		this.libelle = libelle;
 		this.tarif = tarif;
 	}
@@ -22,11 +23,12 @@ public class TypeAdhesion {
 	//constructeur avec idTypeAdhesion
 	public TypeAdhesion(int idTypeAdhesion, String libelle, int tarif) {
 		this.idTypeAdhesion = idTypeAdhesion;
+		
 		this.libelle = libelle;
 		this.tarif = tarif;
 	}
 	
-	//getter
+	//getter (récupère l'id du type d'adhésion, libelle et tarif catégorie)
 	public int getIdTypeAdhesion() {
 		return this.idTypeAdhesion;
 	}
@@ -37,7 +39,7 @@ public class TypeAdhesion {
 		return this.tarif;
 	}
 	
-	//setter
+	//setter (modifie l'id du type adhésion, le libelle et le tarif d'une catégorie)
 	public void setIdTypeAdhesion(int idTypeAdhesion) {
 		this.idTypeAdhesion = idTypeAdhesion;
 	}
@@ -48,7 +50,7 @@ public class TypeAdhesion {
 		this.tarif = tarif;
 	}
 	
-	//méthode
+	//méthode (reduction d'un tarif)
 	public int reductionTarif(int reduction) {
 		double reduc = 1 - (reduction / 100.0);
 		tarif = (int)Math.round(tarif * reduc);

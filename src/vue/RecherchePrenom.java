@@ -31,8 +31,7 @@ public class RecherchePrenom extends JPanel{
 	private JButton boutonRecherche = new JButton("Rechercher");
 	private JComboBox combo;
 	private Font police, police1;
-	  private Dimension dim = new Dimension(120, 20);
-
+	private Dimension dim = new Dimension(120, 20);
 	private Dimension dim2 = new Dimension(500, 450);
 	
 	
@@ -47,7 +46,7 @@ public class RecherchePrenom extends JPanel{
 	
 	private void initComposant() {
 		police = new Font("Arial", Font.BOLD, 20);
-	     police1 = new Font("Arial", Font.BOLD, 18);		
+	    police1 = new Font("Arial", Font.BOLD, 18);		
 
 		//Première partie "Rechercher par Prenom
 		RecherchePrenomPan = new JPanel();
@@ -246,43 +245,32 @@ public class RecherchePrenom extends JPanel{
 		public void actionPerformed(ActionEvent e) {
 			ArrayList<String> items = new ArrayList<String>();
 
-			if(!PrenomTextField.getText().isEmpty())
-	    	{	   
+			if(!PrenomTextField.getText().isEmpty()) {	   
 			    items.add("Sélectionner...");
-
-				   AdherentDB adDb = new AdherentDB();
-
-				   
-				    ArrayList adherent = new ArrayList();
-
-				    adherent=adDb.recherchePrenomsAdherents(PrenomTextField.getText());
-
-				    if(adherent.size()!=0){
-				    for(int i = 0; i < adherent.size(); i++)
-
-				    {
+			    AdherentDB adDb = new AdherentDB();
+			    ArrayList adherent = new ArrayList();
+			    adherent=adDb.recherchePrenomsAdherents(PrenomTextField.getText());
+			   
+			    if(adherent.size()!=0){
+				    for(int i = 0; i < adherent.size(); i++) {
 				    	items.add(((Adherent) adherent.get(i)).getNom()+" "+((Adherent) adherent.get(i)).getPrenom());
+				    } 
 				    
-
-				    }               
 				    String[] itemsS = new String[items.size()];
 				    itemsS = items.toArray(itemsS);
 
 				    combo.setModel( new DefaultComboBoxModel( itemsS )) ;
 				    dim2 = new Dimension(500, 180);
 				    contentPan.setPreferredSize(dim2);
-				 ListeAdherentsPan.setVisible(true);
-				 FicheAdherentPan.setVisible(false);
-				    }else{
-				    	 ListeAdherentsPan.setVisible(false);
-						 FicheAdherentPan.setVisible(false);
-				    	JOptionPane jop2 = new JOptionPane();
+				    ListeAdherentsPan.setVisible(true);
+				    FicheAdherentPan.setVisible(false);
+				}else {
+					ListeAdherentsPan.setVisible(false);
+					FicheAdherentPan.setVisible(false);
+				    JOptionPane jop2 = new JOptionPane();
 
-			    		jop2.showMessageDialog(null, "Aucune résultat! Réessayez SVP! ", "Erreur", JOptionPane.ERROR_MESSAGE);
-			    		
-				    }
-				    
-
+			    	jop2.showMessageDialog(null, "Aucune résultat! Réessayez SVP! ", "Erreur", JOptionPane.ERROR_MESSAGE);	
+				}	    
 	    	}else {
 			    ListeAdherentsPan.setVisible(false);
 			    FicheAdherentPan.setVisible(false);
@@ -326,12 +314,12 @@ public class RecherchePrenom extends JPanel{
 				TitledBorder bf = BorderFactory.createTitledBorder("Fiche Adherent "+ NomFicheAdherentT.getText() +" "+ PrenomFicheAdherentT.getText());
 				FicheAdherentPan.setBorder(bf);
 				bf.setTitleFont(police);
-	    	}else {dim2 = new Dimension(500, 180);
-		    contentPan.setPreferredSize(dim2);
-    		FicheAdherentPan.setVisible(false);	
-    		 JOptionPane jop1 = new JOptionPane();
-	    	 jop1.showMessageDialog(null, "Veuillez sélectionner un Adhérent ", "Information", JOptionPane.INFORMATION_MESSAGE);	
-    	
+	    	}else {
+	    		dim2 = new Dimension(500, 180);
+	    		contentPan.setPreferredSize(dim2);
+	    		FicheAdherentPan.setVisible(false);	
+	    		JOptionPane jop1 = new JOptionPane();
+	    		jop1.showMessageDialog(null, "Veuillez sélectionner un Adhérent ", "Information", JOptionPane.INFORMATION_MESSAGE);
 	    	}
 	    }
 	}

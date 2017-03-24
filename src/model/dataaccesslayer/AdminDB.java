@@ -10,33 +10,40 @@ import model.classe.Adherent;
 import model.classe.TypeAdhesion;
 
 public class AdminDB {
+	//Variables membres
 	private PreparedStatement st = null;
 	private Statement state = null;
 	private ResultSet result = null;
 	
-	
+	//Permet de se connecter à l'application (vérifie utilisateur et mdp correct à celui de la bdd)
 	public boolean connexion(String utilisateur, String motdepasse) {
-		//Établissement de la connexion
+		//variables locales
 		int count = 0;
 		boolean valeur = false;
+		
 		try {
+			//Chargement du driver JDBC pour MySQL
 			Class.forName( "com.mysql.jdbc.Driver" );
 		
 		} catch ( ClassNotFoundException e ) {
 			System.out.println( "Erreur chargement du driver: " +e.getMessage() );	
 		}
 		
-		
 		try {
+	  		//Création d'un statement
 			String sql = "SELECT COUNT(*) AS nb FROM administrateur WHERE login = '"+utilisateur+"' AND motdepasse = '"+motdepasse+"'";
+			//Établissement de la connexion
 			state = ConnexionDB.getInstance().createStatement();
+			//exécution requête
 			result = state.executeQuery( sql );
 			
-			//Etape 5 : (parcours Resultset
+			//parcours Resultset
 			while( result.next() ) {
 				count = result.getInt( "nb" );
 			}
+			
 			System.out.println(count);
+			//Traduit la valeur avec le bon boolean
 			if(count != 0) {
 				valeur = true;
 			}else {
@@ -65,38 +72,34 @@ public class AdminDB {
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			}
-	        	
+			}   	
 		}
 		return valeur;
 	}
 	
-	
+	//Récupère la date de la dernière visite
 	public Date getDateDerVisite() {
-		//Chargement du driver JDBC pour MySQL
-		try {	
+		try {
+			//Chargement du driver JDBC pour MySQL
 			Class.forName( "com.mysql.jdbc.Driver" );
 			
 		} catch ( ClassNotFoundException e ) {
 			System.out.println( "Erreur chargement du driver: " +e.getMessage() );
 		}
-		
+		//Variable locale
 		Date dateVisite = null;
 		
-		//Établissement de la connexion
-		try {
-			//Etape 4 : exécution requête
+		try {	
+			//Création d'un statement
 			String sql = "SELECT DateDerVisite FROM administrateur";
-			//Etape 4 : exécution requête
+			//Établissement de la connexion
 			state = ConnexionDB.getInstance().createStatement();
-			
+			//exécution requête
 			result = state.executeQuery( sql );
 			
-			//Etape 5 : (parcours Resultset
-		 if(result.next()){
-				
+			//parcours Resultset
+			if(result.next()){
 				dateVisite = result.getDate( "DateDerVisite" );
-
 			}
 			
 		} catch(SQLException e) {
@@ -121,55 +124,50 @@ public class AdminDB {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-	        	
+			}      	
 		}
 		return 	dateVisite;
 	}
 	
 	
-
+	//Met à jours la date pour celle actuelle
 	public void updateDateDerVisite(Date dateAujour) {
-		
+		//variable locale
 		java.sql.Date dateDB = new java.sql.Date(dateAujour.getTime());
-			//Chargement du driver JDBC pour MySQL
-			try {	
-				Class.forName( "com.mysql.jdbc.Driver" );
-				
-			} catch ( ClassNotFoundException e ) {
-				System.out.println( "Erreur chargement du driver: " +e.getMessage() );
-			}
-			
-			//Établissement de la connexion
-			try {
-				//Création d'un statement
-				String sql = "UPDATE administrateur SET  DateDerVisite = ? ";
-				
-				
-				st = ConnexionDB.getInstance().prepareStatement( sql );
-				st.setDate(1,dateDB );
-				
-				
-				st.executeUpdate();
-				
-			} catch(SQLException e) {
-				e.printStackTrace();
-			}finally {	
-			    try {
-					if (!st.isClosed()) {
-					    try {
-					    	st.close();
-					    } catch (SQLException e) { /* ignoré */}
-					}
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			        	
-			}
-		}
-
 		
-	
+		try {	
+			//Chargement du driver JDBC pour MySQL
+			Class.forName( "com.mysql.jdbc.Driver" );
+				
+		} catch ( ClassNotFoundException e ) {
+			System.out.println( "Erreur chargement du driver: " +e.getMessage() );
+		}
+			
+		try {
+			//Création d'un statement
+			String sql = "UPDATE administrateur SET  DateDerVisite = ? ";
+			//Établissement de la connexion avec la bdd
+			st = ConnexionDB.getInstance().prepareStatement( sql );
+			//changement
+			st.setDate(1,dateDB );
+			//Exécution du changement
+			st.executeUpdate();
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}finally {	
+		    try {
+				if (!st.isClosed()) {
+				    try {
+				    	st.close();
+				    } catch (SQLException e) { /* ignoré */}
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	        	
+		}
+	}
+
 	
 }

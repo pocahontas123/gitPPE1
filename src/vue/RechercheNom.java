@@ -31,21 +31,22 @@ public class RechercheNom extends JPanel{
 	private JButton boutonRecherche = new JButton("Rechercher");
 	private JComboBox combo;
 	private Font police, police1;
-	  private Dimension dim = new Dimension(120, 20);
-	  private Dimension dim2 = new Dimension(500, 460);
+	private Dimension dim = new Dimension(120, 20);
+	private Dimension dim2 = new Dimension(500, 460);
 	
 	
 	public RechercheNom() { 
 	    this.setSize(500, 500);
 	    this.setVisible(true);
 	    contentPan.setPreferredSize(dim2);
-this.setBackground(Color.WHITE);
+	    this.setBackground(Color.WHITE);
+	    
 	    this.initComposant();
 	}
 	
 	private void initComposant() {
-		 police = new Font("Arial", Font.BOLD, 20);
-	     police1 = new Font("Arial", Font.BOLD, 18);		
+		police = new Font("Arial", Font.BOLD, 20);
+	    police1 = new Font("Arial", Font.BOLD, 18);		
 		//Première partie "Rechercher par Nom
 		RechercheNomPan = new JPanel();
 		RechercheNomPan.setPreferredSize(new Dimension(165, 80));
@@ -80,10 +81,12 @@ this.setBackground(Color.WHITE);
 	    
 	    boutonRecherche.setPreferredSize(dim);
 
+	    //ajoute les élément JLabel et JTextField au Pan RechercheNomPan
 	    RechercheNomPan.add(Nom);
 	    RechercheNomPan.add(NomT);
 	    RechercheNomPan.add(boutonRecherche);
 	    
+	    //listener sur le bouton recherche
 	    boutonRecherche.addActionListener(new BoutonRechercheActionListener());
 	    
 	    //Contenu deuxième partie
@@ -199,6 +202,7 @@ this.setBackground(Color.WHITE);
 	    PaiementT.setHorizontalAlignment(JLabel.LEFT);
 	    PaiementT.setPreferredSize(new Dimension(220, 20));
 	    
+	    //Ajoute les élements au Panel
 	    FicheAdherentPan.add(Nom2);
 	    FicheAdherentPan.add(NomTT);
 	    FicheAdherentPan.add(Prenom);
@@ -230,6 +234,7 @@ this.setBackground(Color.WHITE);
 	    contentPan.add(RechercheNomPan, BorderLayout.NORTH);
 	    contentPan.add(ListeAdherentsPan, BorderLayout.CENTER);
 	    contentPan.add(FicheAdherentPan, BorderLayout.SOUTH);
+	    
 	    contentPan.setBackground(Color.WHITE);
 	    RechercheNomPan.setBackground(Color.WHITE);
 	    ListeAdherentsPan.setBackground(Color.WHITE);
@@ -242,44 +247,34 @@ this.setBackground(Color.WHITE);
 	class BoutonRechercheActionListener implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			ArrayList<String> items = new ArrayList<String>();
-			if(!NomT.getText().isEmpty())
-	    	{	
-			    items.add("Sélectionner...");
-
-
-				   AdherentDB adDb = new AdherentDB();
-
-				   
-				    ArrayList adherent = new ArrayList();
-
-				    adherent=adDb.rechercheNomsAdherents(NomT.getText());
-
-				    if(adherent.size()!=0){
-				    for(int i = 0; i < adherent.size(); i++)
-
-				    {
-				    	items.add(((Adherent) adherent.get(i)).getNom()+" "+((Adherent) adherent.get(i)).getPrenom());
-				    
-
-				    }               
+			
+			if(!NomT.getText().isEmpty()) {	
+				items.add("Sélectionner...");
+				AdherentDB adDb = new AdherentDB();
+				ArrayList adherent = new ArrayList();
+				adherent = adDb.rechercheNomsAdherents(NomT.getText());
+				
+				if(adherent.size() != 0){
+					for(int i = 0; i < adherent.size(); i++) {
+						items.add(((Adherent) adherent.get(i)).getNom()+" "+((Adherent) adherent.get(i)).getPrenom());
+					}   
+					
 				    String[] itemsS = new String[items.size()];
 				    itemsS = items.toArray(itemsS);
 
 				    combo.setModel( new DefaultComboBoxModel( itemsS )) ;
 				    dim2 = new Dimension(500, 180);
 				    contentPan.setPreferredSize(dim2);
-				 ListeAdherentsPan.setVisible(true);
-				 FicheAdherentPan.setVisible(false);
-				    }else{
-				    	 ListeAdherentsPan.setVisible(false);
-						 FicheAdherentPan.setVisible(false);
-				    	JOptionPane jop2 = new JOptionPane();
+				    ListeAdherentsPan.setVisible(true);
+				    FicheAdherentPan.setVisible(false);
+			    }else{
+			    	ListeAdherentsPan.setVisible(false);
+					FicheAdherentPan.setVisible(false);
+			    	JOptionPane jop2 = new JOptionPane();
 
-			    		jop2.showMessageDialog(null, "Aucune résultat! Réessayez SVP! ", "Erreur", JOptionPane.ERROR_MESSAGE);
+		    		jop2.showMessageDialog(null, "Aucune résultat! Réessayez SVP! ", "Erreur", JOptionPane.ERROR_MESSAGE);
 			    		
-				    }
-				    
-
+				}	    
 	    	}else {
 			    ListeAdherentsPan.setVisible(false);
 			    FicheAdherentPan.setVisible(false);
@@ -326,9 +321,9 @@ this.setBackground(Color.WHITE);
 	    		dim2 = new Dimension(500, 180);
 			    contentPan.setPreferredSize(dim2);
 	    		FicheAdherentPan.setVisible(false);	
-	    		 JOptionPane jop1 = new JOptionPane();
-		    	 jop1.showMessageDialog(null, "Veuillez sélectionner un Adhérent ", "Information", JOptionPane.INFORMATION_MESSAGE);	
-	    	
+	    		JOptionPane jop1 = new JOptionPane();
+	    		
+		    	jop1.showMessageDialog(null, "Veuillez sélectionner un Adhérent ", "Information", JOptionPane.INFORMATION_MESSAGE);	
 	    	}
 	    }
 	}

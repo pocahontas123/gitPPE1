@@ -31,7 +31,6 @@ public class SupprimerCategorie extends JPanel{
 	private Font police, police1;
 	private JLabel Libelle, Tarif, LibelleT, TarifT, listeCat;
 	
-	
 	private JComboBox combo;
 	
 	private JButton b = new JButton ("Supprimer");

@@ -17,7 +17,7 @@ public class Adherent {
 	private boolean paiement;	
 	private java.sql.Date anneeNaissance;
 	
-	//constructeur sans id
+	//constructeur sans id donc qui n'exte pas encore (incrémentation auto bdd)
 	public Adherent(String nom, String prenom, String codePostal, String ville, java.sql.Date anneeNaissance, TypeAdhesion typeAdhesion, String telephone, String email, boolean paiement) {
 		this.id = -1;
 		this.nom = nom;
@@ -31,14 +31,15 @@ public class Adherent {
 		this.paiement = paiement;
 	}
 	
-	//constructeur avec id
+	//Surcharge constructeur avec id donc qui existe
 	public Adherent(int id, String nom, String prenom, String codePostal, String ville, java.sql.Date anneeNaissance, TypeAdhesion typeAdhesion, String telephone, String email, boolean paiement) {
+		//appel du constructeur si dessus
 		this(nom, prenom, codePostal, ville, anneeNaissance, typeAdhesion, telephone, email, paiement);
 		
 		this.id = id;	
 	}
 	
-	//getter
+	//getter (récupère id, nom, prenom, codepostal, ville, année de naissance, type de l'adhésion, telephone, mail et paiement)
 	public int getId() {
 		return this.id;
 	}
@@ -70,7 +71,7 @@ public class Adherent {
 		return this.paiement;
 	}
 	
-	//setter
+	//setter (modifie le nom, prenom, code postal, ville, année de naissance, type d'adhésion, telephone, email et paiement)
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
@@ -98,19 +99,18 @@ public class Adherent {
 	public void setPaiement(boolean paiement) {
 		this.paiement = paiement;
 	}
-	public  int calculAge()
-	{
+	
+	public  int calculAge() {
 		Calendar curr = Calendar.getInstance();
-	Calendar naissance = Calendar.getInstance();
-	naissance.setTime(this.getAnneeNaissance());
+		Calendar naissance = Calendar.getInstance();
+		naissance.setTime(this.getAnneeNaissance());
 		int age;
+		
 		age=curr.get(Calendar.YEAR) - naissance.get(Calendar.YEAR) ;
-		if((curr.get(Calendar.MONTH)==naissance.get(Calendar.MONTH) && curr.get(Calendar.DAY_OF_MONTH)<naissance.get(Calendar.DAY_OF_MONTH)) || curr.get(Calendar.MONTH)<naissance.get(Calendar.MONTH)) 
-		{
+		if((curr.get(Calendar.MONTH)==naissance.get(Calendar.MONTH) && curr.get(Calendar.DAY_OF_MONTH)<naissance.get(Calendar.DAY_OF_MONTH)) || curr.get(Calendar.MONTH)<naissance.get(Calendar.MONTH)) {
 			age--;
 		}
-			return age;
+		return age;
 	}
-	
 	
 }

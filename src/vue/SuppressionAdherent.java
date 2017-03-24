@@ -51,8 +51,8 @@ public class SuppressionAdherent extends JPanel{
 	}
 
 	private void initComposant(){
-	     police = new Font("Arial", Font.BOLD, 20);
-	     police1 = new Font("Arial", Font.BOLD, 18);		
+		police = new Font("Arial", Font.BOLD, 20);
+	    police1 = new Font("Arial", Font.BOLD, 18);		
 
 	    ListeAdherents = new JPanel();
 	    ListeAdherents.setPreferredSize(new Dimension(80, 75));
@@ -62,7 +62,7 @@ public class SuppressionAdherent extends JPanel{
 	    
 	    ficheAdherentPan = new JPanel();
 	    ficheAdherentPan.setPreferredSize(dim2);
-	     titleBorder1 = BorderFactory.createTitledBorder("Fichie Adhérent");
+	    titleBorder1 = BorderFactory.createTitledBorder("Fichie Adhérent");
 	    ficheAdherentPan.setBorder(titleBorder);
 	    titleBorder1.setTitleFont(police);
 	   
@@ -73,7 +73,7 @@ public class SuppressionAdherent extends JPanel{
 	    
 	    
 
-	      listeAd = new JLabel("Liste des Adhérents : ");
+	    listeAd = new JLabel("Liste des Adhérents : ");
 	    listeAd.setFont(police1);
 	    listeAd.setHorizontalAlignment(JLabel.RIGHT);
 	    listeAd.setPreferredSize(new Dimension(220, 20));

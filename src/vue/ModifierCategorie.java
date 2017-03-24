@@ -30,7 +30,9 @@ import vue.ModifierAdherent.BoutonListener;
 import vue.ModifierAdherent.BoutonListenerCombo;
 import vue.ModifierAdherent.BoutonListenerRaz;
 
-public class ModifierCategorie extends JPanel{
+//hérite de JPanel
+public class ModifierCategorie extends JPanel {
+	//variables membres
 	private JPanel contentPan = new JPanel();
 	private JPanel boutonPan;
 	private JPanel ListeCategories;
@@ -48,19 +50,24 @@ public class ModifierCategorie extends JPanel{
 	private JPanel AdherentPan ;  
 	private JLabel libelle, prix, typeAdhesion, listeCat;
 	
+	//constructeur par défaut
 	public ModifierCategorie() {
 		this.setSize(500, 400);
 		this.setVisible(true);
     	contentPan.setPreferredSize(dim2);
 		this.setBackground(Color.white);
 
+		//Chargement de la méthode de création et d'initialisation des éléments de ma page
 	    this.initComposant();	
 	}
 	
+	//Méthode de création et d'initialisation des éléments de ma page
 	private void initComposant() {
-	     police = new Font("Arial", Font.BOLD, 20);
-	     police1 = new Font("Arial", Font.BOLD, 18);		
+		//Police de caractère
+		police = new Font("Arial", Font.BOLD, 20);
+	    police1 = new Font("Arial", Font.BOLD, 18);		
 
+	    //Création des JPanels et JTextField
 	    ListeCategories = new JPanel();
 	    ListeCategories.setPreferredSize(new Dimension(220, 80));
 	    TitledBorder titleBorder = BorderFactory.createTitledBorder("Liste catégories");
@@ -74,24 +81,30 @@ public class ModifierCategorie extends JPanel{
 	    
 	    combo = new JComboBox();
 	    combo.setPreferredSize(new Dimension(100, 20));
+	    
 	    TypeAdhesionDB typeDB = new TypeAdhesionDB();
-		ArrayList type = new ArrayList();
-		
+		ArrayList type = new ArrayList();	
+		//On récupère les types d'adhésion (catégories)
 		type = typeDB.getTypeAdhesions();
 		
 		combo.addItem("Sélectionner...");
 	    for(int i = 0; i < type.size(); i++) {
+	    	//Ajoute au combobox les Libelle tirés de type
 	    	combo.addItem(((TypeAdhesion) type.get(i)).getLibelle());
 	    }
+	    //initiation de la taille du combo
 	    combo.setPreferredSize(new Dimension(200, 30));
+	    //ajout d'un action listener pour combo
 	    combo.addActionListener(new BoutonListenerCombo());
 	
 	    AdherentPan = new JPanel();
 	    AdherentPan.setPreferredSize(new Dimension(165, 225));
-
+	    
+	    
 	    TitledBorder titleBorder2 = BorderFactory.createTitledBorder("Modifier Cathégorie");
 	    AdherentPan.setBorder(titleBorder2);
 	    titleBorder2.setTitleFont(police);
+	    
 	    libelle = new JLabel("Libelle : ");
 	    libelle.setFont(police1);
 	    libelle.setHorizontalAlignment(JLabel.RIGHT);
@@ -104,27 +117,34 @@ public class ModifierCategorie extends JPanel{
 	    prix.setHorizontalAlignment(JLabel.RIGHT);
 	    prix.setPreferredSize(new Dimension(220, 20));
 	    
-	    try{
-	    	 
-	    	  MaskFormatter telMask = new MaskFormatter("### €");
-	    	  prixT = new JFormattedTextField(telMask);
-	    	}catch(ParseException e){e.printStackTrace();}
-	  ((JFormattedTextField) prixT).setFocusLostBehavior( JFormattedTextField.PERSIST ); 
 	    
-	   	    
-
+	    try{
+	    	MaskFormatter telMask = new MaskFormatter("### €");
+	    	prixT = new JFormattedTextField(telMask);
+	    	  
+	    	}catch(ParseException e){
+	    		e.printStackTrace();
+	    	}
+	    
+	    //Correction bug 
+	    ((JFormattedTextField) prixT).setFocusLostBehavior( JFormattedTextField.PERSIST ); 
+	    
+	   	//régle les tailles des deux JTextField    
 	    libelleT.setPreferredSize(new Dimension(200, 30));
 	    prixT.setPreferredSize(new Dimension(200, 30));
 	    
+	    //Ajoute les JPanel et JTextField au CENTRE
 	    AdherentPan.add(libelle);
 	    AdherentPan.add(libelleT);
 	    
 	    AdherentPan.add(prix);
 	    AdherentPan.add(prixT);
 	    
+	    //taille des deux boutons Envoyer et RAZ
 	    b.setPreferredSize(dim);
 	    raz.setPreferredSize(dim);
 	    
+	    //Ajoute 2 listeners à mes boutons
 	    b.addActionListener(new BoutonListener());
 	    raz.addActionListener(new BoutonListenerRaz());
 	    
@@ -134,17 +154,24 @@ public class ModifierCategorie extends JPanel{
 	    boutonPan.add(raz);
 	    boutonPan.setPreferredSize(new Dimension(50, 60));
 
+	    //gestion visibilité
 	    ListeCategories.setVisible(true);
 	    AdherentPan.setVisible(false);
 	    boutonPan.setVisible(false);
 	    
+	    //Création d'un BorderLayout 
 	    contentPan.setLayout(new BorderLayout());
+	    
+	    //Ajoute listeCat et combo au NORTH
 	    ListeCategories.add(listeCat);
-
 	    ListeCategories.add(combo);
+	    
+	    
 	    contentPan.add(ListeCategories, BorderLayout.NORTH);
 	    contentPan.add(AdherentPan, BorderLayout.CENTER);
 	    contentPan.add(boutonPan, BorderLayout.SOUTH);
+	    
+	    //couleur de fond
 	    contentPan.setBackground(Color.WHITE);
 	    ListeCategories.setBackground(Color.WHITE);
 	    AdherentPan.setBackground(Color.WHITE);
@@ -153,24 +180,27 @@ public class ModifierCategorie extends JPanel{
 	    this.add(contentPan);   
 	}
 	
+	//Listener du combo
 	class BoutonListenerCombo implements ActionListener {
 		
 		public void actionPerformed(ActionEvent e) {
-			if ((String)combo.getSelectedItem()!="Sélectionner...") {
+			//si je n'ai pas "Sélectionner..." de sélectionner
+			if ((String)combo.getSelectedItem() != "Sélectionner...") {
+				//gestion affichage (visible CENTER et SOUTH)
 				AdherentPan.setVisible(true);
 	    		boutonPan.setVisible(true);
 	    		
+	    		//Recherche du typeAdhesion avec le nom tiré d'un split() au niveau du combo
 	    		TypeAdhesionDB typeDb = new TypeAdhesionDB();
 	    		TypeAdhesion type;
-
 	    		String nom = (String)combo.getSelectedItem();
-
 	    		type = typeDb.getTypeAdhesion(nom);
 	    		
-	    		
+	    		//remplir les setText avec les infos de l'objet type
 				libelleT.setText(type.getLibelle());
 				String tarif = String.valueOf(type.getTarif());
 				prixT.setText(tarif);
+				
 				TitledBorder bf = BorderFactory.createTitledBorder("Modifier Categorie "+ libelleT.getText());
 				AdherentPan.setBorder(bf);
 				bf.setTitleFont(police);

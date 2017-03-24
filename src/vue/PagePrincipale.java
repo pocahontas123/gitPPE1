@@ -25,15 +25,15 @@ import model.dataaccesslayer.AdminDB;
 import model.dataaccesslayer.ConnexionDB;
 
 
-
+//hérite de JFrame
 public class PagePrincipale extends JFrame {
 
+	//Variables membres
 	private URL imageM2l;
 	private URL imageTir;
 	private ImageIcon iconM2l;
 	private ImageIcon iconTir;
 	private JPanel image= new JPanel();
-
 
 	//private Dimension dim2 = new Dimension(600, 200);
 
@@ -45,7 +45,6 @@ public class PagePrincipale extends JFrame {
 	private JMenu rapportRecapitulatif = new JMenu("Rapport récapitulatif");
 	
 	private JMenuItem item2 = new JMenuItem("Déconnexion");
-
 	private JMenuItem item1 = new JMenuItem("Quitter");
 	
 	private JRadioButtonMenuItem radioBoutonAfficher1 = new JRadioButtonMenuItem("Afficher");
@@ -79,8 +78,8 @@ public class PagePrincipale extends JFrame {
 	public PagePrincipale() {
 		//titre de la Frame
 		this.setTitle("Application Gestion Adherents");
-		//taille de la frame
-	//	this.setSize(600, 300);
+
+		//this.setSize(600, 300);
 		this.setBackground(Color.white);
 
 		
@@ -89,9 +88,9 @@ public class PagePrincipale extends JFrame {
 		
 	    contentPane.setBackground(Color.WHITE);
 		
+	    //Appel de la class login.java
 		Login login = new Login();
 		contentPane.setLayout(new BorderLayout());
-
 		contentPane.add(login, BorderLayout.CENTER);
 		
 	    this.setContentPane(contentPane);
@@ -104,8 +103,8 @@ public class PagePrincipale extends JFrame {
 	
 	
 	
-	void initComposant(){
-		
+	void initComposant() {
+		//cache le ménu car par encore connecté
     	menuBar.setVisible(false);
 
 		
@@ -126,8 +125,8 @@ public class PagePrincipale extends JFrame {
 		
 		bg.add(radioBoutonRapportRecap11);
 		bg.add(radioBoutonRapportAdherentPasPayer12);
+		
 		//Rajoute mes boutons à mon sous-menu 1
-
 		this.gestionAdherent.add(radioBoutonAfficher1);
 		this.gestionAdherent.add(radioBoutonAjouter2);
 		this.gestionAdherent.add(radioBoutonModifier3);
@@ -156,16 +155,14 @@ public class PagePrincipale extends JFrame {
 		
 		this.gestion.addSeparator();
 
-		//Rajoute à mon menu "Quitter"
+		//Rajoute à mon menu "Quitter" et le restent
 		this.gestion.add(item1);
-		
-		
-
 		this.menuBar.add(gestion);
 		this.menuBar.add(rechercheAdherent);
 		this.menuBar.add(rapportRecapitulatif);
 		this.setJMenuBar(menuBar);
 		
+		//écoute mes boutons
 		radioBoutonAfficher1.addActionListener(new jrmListener());
 		radioBoutonAjouter2.addActionListener(new jrmListener());
 		radioBoutonModifier3.addActionListener(new jrmListener());
@@ -187,6 +184,7 @@ public class PagePrincipale extends JFrame {
 
 	  }
 
+	//Listener de l'item "Quitter"
 	class itemListener implements ActionListener {
 	
 		public void actionPerformed(ActionEvent e) {
@@ -197,17 +195,16 @@ public class PagePrincipale extends JFrame {
                          "Confirmation",
                          JOptionPane.YES_NO_OPTION,
                          JOptionPane.QUESTION_MESSAGE);
-    if (reponse==JOptionPane.YES_OPTION){
-    	System.out.println("Choix 3 : Quitter l'application");
-    	ConnexionDB.closeConnexion();
-		System.exit(0);
-    }
-}
-				
-			}
+			    if (reponse == JOptionPane.YES_OPTION) {
+			    	System.out.println("Choix 3 : Quitter l'application");
+			    	ConnexionDB.closeConnexion();
+					System.exit(0);
+			    }
+			}	
 		}
+	}
 	
-	
+	//Ecoute l'item "Déconnexion"
 	class item2Listener implements ActionListener {
 		
 		public void actionPerformed(ActionEvent e) {
@@ -218,27 +215,31 @@ public class PagePrincipale extends JFrame {
                          "Confirmation",
                          JOptionPane.YES_NO_OPTION,
                          JOptionPane.QUESTION_MESSAGE);
-    if (reponse==JOptionPane.YES_OPTION){
-    	System.out.println("Choix 3 : Déconnecter de  l'application");
-    	ConnexionDB.closeConnexion();
-    	Login login = new Login();
-    	contentPane.removeAll();
-    	//menuBar.setVisible(false);
-    	M2L.frame.setSize(600, 300);
-    	M2L.frame.setLocationRelativeTo(null);
-		//Empêche le changement de taille de la fenêtre
-    	PagePrincipale.this.setResizable(false);
-    	contentPane.add(login, BorderLayout.CENTER);
-
-    	contentPane.revalidate();
-		contentPane.repaint();
-
-		
-    }
-}
-				
+				 
+			    if (reponse == JOptionPane.YES_OPTION) {
+			    	System.out.println("Choix 3 : Déconnecter de  l'application");
+			    	//Déconnexion
+			    	ConnexionDB.closeConnexion();
+			    	//Chargement du login
+			    	Login login = new Login();
+			    	contentPane.removeAll();
+			    	//rend le menu non bisible
+			    	menuBar.setVisible(false);
+			    	PagePrincipale.this.setSize(600, 300);
+			    	PagePrincipale.this.setLocationRelativeTo(null);
+					//Empêche le changement de taille de la fenêtre
+			    	PagePrincipale.this.setResizable(false);
+			    	contentPane.add(login, BorderLayout.CENTER);
+			
+			    	contentPane.revalidate();
+					contentPane.repaint();
+			    }
 			}
+				
 		}
+	}
+	
+	//Listener qui charge les élements après le clic
 	class jrmListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {		
@@ -373,9 +374,12 @@ public class PagePrincipale extends JFrame {
 			}
 		}
 	}	
-	public static void setVisibeMenu()
-	{
+	//Méthode pour rendre le menu visible
+	public static void setVisibeMenu() {
+		//static
 		menuBar.setVisible(true);
 	}
-	
+	public void setTaille(int largeur, int hauteur) {
+		this.pack();
+	}
 }
